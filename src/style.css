@@ -1,0 +1,31 @@
+* {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+:root {
+    --text-color: black;
+    --background-color: white;
+    --primary-color: cornflowerblue;
+    --secondary-color: blue;
+    --accent-color: darkblue;
+}
+
+body {
+    background-image: url("/images/background-image.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#banner {
+    background-color: var(--background-color);
+}
+
+#app {
+    background-color: var(--background-color);
+}
+
+footer {
+    background-color: var(--background-color);
+    display: flex;
+    flex-direction: column;
+}
