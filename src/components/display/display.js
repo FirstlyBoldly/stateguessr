@@ -4,9 +4,9 @@ import { Fonts } from "./font";
 const displayOn = document.getElementById("display-on");
 
 export class Display {
-    static defaultOnColor = "white";
-    static defaultOffColor = "gray";
-    static defaultBackgroundColor = "black";
+    static defaultOnColor = "#FF9001";
+    static defaultOffColor = "#4B4B4B";
+    static defaultBackgroundColor = "#000000";
 
     constructor(options = {}, text = "") {
         this.options = {
@@ -73,8 +73,8 @@ export class Display {
     }
 
     drawDot(x, y, options = {}) {
-        this.ctx.shadowBlur = options.shadowBlur || 20;
-        this.ctx.shadowColor = options.shadowColor || this.options.onColor;
+        this.ctx.shadowBlur = options.shadowBlur || 15;
+        this.ctx.shadowColor = options.shadowColor || "#FF4200";
         this.ctx.fillStyle = options.fillStyle || this.options.onColor;
         this.ctx.fillRect(x, y, this.options.dotSize, this.options.dotSize);
     }

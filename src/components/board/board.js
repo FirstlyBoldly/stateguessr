@@ -8,13 +8,16 @@ export const Board = (sign) => {
     board.id = "board";
 
     const displayContainer = document.getElementById("display-container");
+    const displayContainerStyle = window.getComputedStyle(displayContainer);
 
     const canvas = Canvas();
-    canvas.width = displayContainer.offsetWidth;
-    canvas.height = displayContainer.offsetWidth;
+    const displayContainerViewportOffsets = displayContainer.getBoundingClientRect();
+    const canvasSize = window.innerHeight - displayContainerViewportOffsets.bottom - parseInt(displayContainerStyle.marginBottom);
+    canvas.width = canvasSize;
+    canvas.height = canvasSize;
 
     const button = Button(
-        "Reset",
+        "",
         () => {
             const ctx = canvas.getContext("2d");
             const w = canvas.width;
@@ -24,6 +27,8 @@ export const Board = (sign) => {
         }
     );
     button.id = "reset-button";
+    const refreshLogo = document.getElementById("refresh-logo");
+    button.appendChild(refreshLogo);
 
     board.append(button, canvas);
 
@@ -36,6 +41,16 @@ export const Board = (sign) => {
 
     window.addEventListener(canvasEvents.canvasCleared, () => {
         sign.clear();
+    });
+
+    document.addEventListener("keydown", (e) => {
+        if (e.ctrlKey && e.key === "q") {
+            const ctx = canvas.getContext("2d");
+            const w = canvas.width;
+            const h = canvas.height;
+            button.click();
+            clearCanvas(ctx, w, h);
+        }
     });
 
     return board;

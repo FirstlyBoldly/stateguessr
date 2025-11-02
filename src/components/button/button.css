@@ -1,0 +1,17 @@
+.button-class {
+    border: none;
+    background: none;
+    font-size: 2rem;
+    color: var(--primary-color);
+    background-color: var(--secondary-color);
+    box-shadow: var(--gap-small) var(--gap-small) var(--primary-color);
+}
+
+.button-class:hover {
+    cursor: pointer;
+}
+
+.button-class:active {
+    box-shadow: none;
+    transform: translate(2px, 2px);
+}

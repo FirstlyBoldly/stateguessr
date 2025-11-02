@@ -1,4 +1,4 @@
 .display {
-    border: 4px solid var(--accent-color);
+    border: var(--gap-small) solid var(--primary-color);
     height: 100px;
 }

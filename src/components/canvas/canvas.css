@@ -1,4 +1,5 @@
 #freehand {
     cursor: crosshair;
-    background-color: white;
+    background-color: var(--tertiary-color);
+    box-shadow: var(--gap-small) var(--gap-small) var(--secondary-color);
 }

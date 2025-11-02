@@ -1,3 +1,4 @@
 #reset-button {
+    margin: var(--gap-small);
     position: absolute;
 }

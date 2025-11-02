@@ -28,7 +28,7 @@ const canvasCleared = () => {
 export const clearCanvas = (ctx, width, height) => {
     inputs = [];
     ctx.rect(0, 0, width, height);
-    ctx.fillStyle = "white";
+    ctx.fillStyle = "#C4C4C4";
     ctx.fill();
     window.dispatchEvent(canvasCleared());
 };
@@ -92,12 +92,6 @@ export const Canvas = () => {
 
     freehand.addEventListener("pointerup", () => {
         stopDrawing();
-    });
-
-    document.addEventListener("keydown", (e) => {
-        if (e.ctrlKey && e.key === "q") {
-            clearCanvas(ctx, freehand.width, freehand.height);
-        }
     });
 
     return freehand;
