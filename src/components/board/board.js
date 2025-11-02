@@ -1,29 +1,18 @@
 import "./board.css";
-import * as tf from "@tensorflow/tfjs";
-import metadata from "/model/metadata";
-import { Canvas, clearCanvas, canvasEvents } from "../canvas";
 import { Button } from "../button";
-import { Display } from "../display";
+import { predictState } from "../../services/tfjs";
+import { Canvas, clearCanvas, canvasEvents } from "../canvas";
 
-const model = await tf.loadLayersModel("/model/model.json");
-
-const predictState = (pixels) => {
-    let tensor = tf.browser.fromPixels(pixels, 3);
-    tensor = tensor.expandDims(0);
-    const result = model.predict(tensor);
-    const index = result.as1D().argMax().dataSync()[0];
-    return metadata["class_names"][index];
-};
-
-export const Board = () => {
+export const Board = (sign) => {
     const board = document.createElement("div");
     board.id = "board";
 
-    const controlContainer = document.createElement("div");
-    controlContainer.id = "control-container";
+    const displayContainer = document.getElementById("display-container");
 
     const canvas = Canvas();
-    const display = Display();
+    canvas.width = displayContainer.offsetWidth;
+    canvas.height = displayContainer.offsetWidth;
+
     const button = Button(
         "Reset",
         () => {
@@ -31,21 +20,22 @@ export const Board = () => {
             const w = canvas.width;
             const h = canvas.height;
             clearCanvas(ctx, w, h);
+            sign.clear();
         }
     );
+    button.id = "reset-button";
 
-    controlContainer.append(display, button);
-    board.append(canvas, controlContainer);
+    board.append(button, canvas);
 
     window.addEventListener(canvasEvents.canvasUpdated, () => {
-        const prediction = predictState(canvas);
+        const prediction = predictState(canvas).toUpperCase();
         if (prediction) {
-            display.innerText = prediction;
+            sign.write(prediction);
         }
     });
 
     window.addEventListener(canvasEvents.canvasCleared, () => {
-        display.innerText = "";
+        sign.clear();
     });
 
     return board;

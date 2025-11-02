@@ -46,11 +46,11 @@ const drawStroke = (ctx, points) => {
 
 export const Canvas = () => {
     const freehand = document.createElement("canvas");
+    freehand.id = "freehand";
     freehand.width = 224;
     freehand.height = 224;
-    freehand.id = "freehand";
-    const ctx = freehand.getContext("2d");
 
+    const ctx = freehand.getContext("2d");
     freehand.addEventListener("pointerdown", (e) => {
         isDrawing = true;
         inputs = [{
@@ -59,7 +59,6 @@ export const Canvas = () => {
             pressure: e.pressure
         }];
         timeout = setInterval(() => {
-            console.log("interval");
             window.dispatchEvent(canvasUpdated());
         }, 3000);
     });
@@ -86,7 +85,9 @@ export const Canvas = () => {
     };
 
     freehand.addEventListener("pointerleave", () => {
-        stopDrawing();
+        if (isDrawing) {
+            stopDrawing();
+        }
     });
 
     freehand.addEventListener("pointerup", () => {

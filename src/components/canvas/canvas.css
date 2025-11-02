@@ -1,3 +1,4 @@
-canvas {
-    border: 10px solid var(--accent-color);
+#freehand {
+    cursor: crosshair;
+    background-color: white;
 }

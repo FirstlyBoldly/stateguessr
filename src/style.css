@@ -7,25 +7,57 @@
     --background-color: white;
     --primary-color: cornflowerblue;
     --secondary-color: blue;
-    --accent-color: darkblue;
+    --accent-color: black;
 }
 
 body {
-    background-image: url("/images/background-image.jpg");
-    background-repeat: no-repeat;
+    margin: 0;
+    padding: 0;
+}
+
+#background {
+    z-index: -1;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: url("/images/background-image.jpg") no-repeat center fixed;
     background-size: cover;
+    filter: blur(2px);
+}
+
+#content {
+    z-index: 1;
 }
 
 #banner {
-    background-color: var(--background-color);
+    padding: 0;
+    margin: 0;
+    line-height: 2rem;
+    font-size: 2rem;
 }
 
 #app {
-    background-color: var(--background-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
     background-color: var(--background-color);
     display: flex;
     flex-direction: column;
+}
+
+#display-container {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    gap: 16px;
+}
+
+.hide {
+    display: none;
 }
