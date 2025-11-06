@@ -10,16 +10,16 @@ export class Display {
 
     constructor(options = {}, text = "") {
         this.options = {
-            length: options.length || 14,
-            canvasPaddingInDots: options.canvasPadding || 1,
-            dotSize: options.dotSize || 12,
-            dotPadding: options.dotPadding || 2,
-            charWidthInDots: options.charWidth || 5,
-            charHeightInDots: options.charHeight || 7,
-            onColor: options.onColor || Display.defaultOnColor,
-            offColor: options.offColor || Display.defaultOffColor,
-            backgroundColor: options.backgroundColor || Display.defaultBackgroundColor,
-            playSound: options.playSound || true,
+            length: options.length ?? 14,
+            canvasPaddingInDots: options.canvasPadding ?? 1,
+            dotSize: options.dotSize ?? 12,
+            dotPadding: options.dotPadding ?? 2,
+            charWidthInDots: options.charWidth ?? 5,
+            charHeightInDots: options.charHeight ?? 7,
+            onColor: options.onColor ?? Display.defaultOnColor,
+            offColor: options.offColor ?? Display.defaultOffColor,
+            backgroundColor: options.backgroundColor ?? Display.defaultBackgroundColor,
+            playSound: options.playSound ?? true,
         };
 
         this.charMarginCumulative = 0;
@@ -110,9 +110,11 @@ export class Display {
             this.drawChar(i, text[i], options);
         }
 
-        if (text != this.text && this.options.playSound) {
+        if (text != this.text) {
             this.text = text;
-            displayOn.play();
+            if (this.options.playSound) {
+                displayOn.play();
+            }
         }
     };
 }

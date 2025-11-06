@@ -1,4 +1,4 @@
-import "./canvas.css";
+import "./freehand.css";
 import { getStroke } from "perfect-freehand";
 
 const fillStyle = "black";
@@ -44,9 +44,9 @@ const drawStroke = (ctx, points) => {
     ctx.stroke();
 };
 
-export const Canvas = () => {
+export const Freehand = () => {
     const freehand = document.createElement("canvas");
-    freehand.id = "freehand";
+    freehand.classList.add("freehand");
     freehand.width = 224;
     freehand.height = 224;
 

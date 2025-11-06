@@ -5,6 +5,7 @@
     color: var(--primary-color);
     background-color: var(--secondary-color);
     box-shadow: var(--gap-small) var(--gap-small) var(--primary-color);
+    transition: transform 0.2s;
 }
 
 .button-class:hover {
@@ -14,4 +15,9 @@
 .button-class:active {
     box-shadow: none;
     transform: translate(2px, 2px);
+}
+
+.button-is-pressed {
+    transform: translate(1px, 1px);
+    box-shadow: none;
 }

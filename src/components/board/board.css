@@ -1,4 +1,34 @@
+#board {
+    position: relative;
+    animation: pulse-glow 5s infinite alternate;
+    background-color: var(--tertiary-color);
+}
+
+#board .freehand {
+    position: absolute;
+}
+
 #reset-button {
     margin: var(--gap-small);
     position: absolute;
+    z-index: 999;
+}
+
+#reset-button object {
+    pointer-events: none;
+}
+
+#front-canvas {
+    z-index: 2;
+    transition: transform 0.5s, opacity 1.0s;
+    transform-origin: top right;
+}
+
+#back-canvas {
+    z-index: 1;
+}
+
+.dropped {
+    transform: rotate(-10deg) translateY(400px);
+    opacity: 0;
 }
