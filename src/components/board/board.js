@@ -1,9 +1,8 @@
 import "./board.css";
 import { Button } from "../button";
-import { predictState } from "../../services/tfjs";
-import { Freehand, clearCanvas, canvasEvents } from "../freehand";
+import { Freehand, clearCanvas } from "../freehand";
 
-const rippingPaperSoundEffect = document.getElementById("ripping-paper");
+const rippingPaperSoundEffect = new Audio("/sounds/ripping-paper.mp3");
 let freehandIsTransitioning = false;
 
 const calcFreehandSize = () => {
@@ -24,18 +23,17 @@ const resetFreehand = () => {
         this.removeEventListener("transitionend", handle);
         this.classList.remove("dropped");
 
-        clearCanvas(
-            this.getContext("2d"),
-            this.width,
-            this.height
-        );
-
         this.id = "back-canvas";
         back.id = "front-canvas";
 
         freehandIsTransitioning = false;
     });
 
+    clearCanvas(
+        front.getContext("2d"),
+        front.width,
+        front.height
+    );
     front.classList.add("dropped");
     rippingPaperSoundEffect.play();
 }
@@ -43,9 +41,7 @@ const resetFreehand = () => {
 const resetFreehandButton = () => {
     const button = Button(
         "",
-        () => {
-            resetFreehand();
-        }
+        () => { resetFreehand(); }
     );
     button.id = "reset-button";
     const refreshLogo = document.getElementById("refresh-logo");
@@ -67,7 +63,7 @@ const addFreehandShortcuts = () => {
     });
 };
 
-export const Board = (sign, indicator) => {
+export const Board = (app) => {
     const board = document.createElement("div");
     board.id = "board";
 
@@ -86,20 +82,6 @@ export const Board = (sign, indicator) => {
 
     board.append(resetCanvas, freehand1, freehand2);
 
-    window.addEventListener(canvasEvents.canvasUpdated, () => {
-        const canvas = document.getElementById("front-canvas");
-        const prediction = predictState(canvas).toUpperCase();
-        if (prediction) {
-            sign.write(prediction);
-            indicator.write("?");
-        }
-    });
-
-    window.addEventListener(canvasEvents.canvasCleared, () => {
-        sign.clear();
-        indicator.write("-");
-    });
-
     // window.addEventListener("resize", () => {
     //     const canvasSize = calcFreehandSize();
     //     freehand1.width = freehand2.width = canvasSize;
@@ -110,5 +92,5 @@ export const Board = (sign, indicator) => {
 
     addFreehandShortcuts();
 
-    return board;
+    app.appendChild(board);
 };

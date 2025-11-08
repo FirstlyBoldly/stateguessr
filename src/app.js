@@ -1,19 +1,28 @@
-import "./style.css";
+import "./global.css";
 import { Board } from "./components/board";
-import { Display } from "./components/display";
+import { canvasEvents } from "./components/freehand";
+import { predictState } from "./services/tfjs";
+import { DisplayContainer } from "./components/display-container";
 
 const app = document.getElementById("app");
 if (app) {
-    const displayContainer = document.createElement("div");
-    displayContainer.id = "display-container";
-    const sign = new Display({}, "STATEGUESSR");
-    const indicator = new Display({ length: 1, playSound: false }, "!");
+    const [sign, indicator] = DisplayContainer(app);
+    Board(app);
 
-    displayContainer.append(sign.canvas, indicator.canvas);
-    app.appendChild(displayContainer);
+    window.addEventListener(canvasEvents.canvasUpdated, () => {
+        const canvas = document.getElementById("front-canvas");
+        const prediction = predictState(canvas).toUpperCase();
+        if (prediction) {
+            sign.write(prediction);
+            indicator.write("?");
+        }
+    });
 
-    const board = Board(sign, indicator);
-    app.appendChild(board);
+    window.addEventListener(canvasEvents.canvasCleared, () => {
+        sign.clear();
+        indicator.write("-");
+    });
+
 } else {
-    console.error("No port element of entry detected!");
+    console.error("No element to append onto.");
 }

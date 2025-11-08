@@ -1,7 +1,7 @@
 import "./display.css";
 import { Fonts } from "./font";
 
-const displayOn = document.getElementById("display-on");
+const displayOn = new Audio("/sounds/display-on.mp3");
 
 export class Display {
     static defaultOnColor = "#FF9001";
@@ -20,6 +20,7 @@ export class Display {
             offColor: options.offColor ?? Display.defaultOffColor,
             backgroundColor: options.backgroundColor ?? Display.defaultBackgroundColor,
             playSound: options.playSound ?? true,
+            changeWithViewport: options.changeWithViewport ?? false,
         };
 
         this.charMarginCumulative = 0;
@@ -41,11 +42,9 @@ export class Display {
             this.canvas.innerText = "";
         }
 
-        this.clear();
-
         this.text = text;
         if (this.text) {
-            this.write(this.text);
+            this.render();
         }
     }
 
@@ -72,14 +71,14 @@ export class Display {
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
-    drawDot(x, y, options = {}) {
-        this.ctx.shadowBlur = options.shadowBlur || 15;
-        this.ctx.shadowColor = options.shadowColor || "#FF4200";
-        this.ctx.fillStyle = options.fillStyle || this.options.onColor;
+    drawDot(x, y) {
+        this.ctx.shadowBlur = this.options.shadowBlur || 15;
+        this.ctx.shadowColor = this.options.shadowColor || "#FF4200";
+        this.ctx.fillStyle = this.options.fillStyle || this.options.onColor;
         this.ctx.fillRect(x, y, this.options.dotSize, this.options.dotSize);
     }
 
-    drawChar(charIndex, char, options = {}) {
+    drawChar(charIndex, char) {
         const dotArray = Fonts[char];
         if (!dotArray) {
             console.error(`Char ${char} is not a supported.`);
@@ -91,12 +90,19 @@ export class Display {
                 if (dotArray[rowIndex][columnIndex]) {
                     const x = charIndex * this.charWidth + (columnIndex + 1) * this.fullDotLength + this.options.dotPadding + this.charMarginCumulative;
                     const y = (rowIndex + 1) * this.fullDotLength + this.options.dotPadding;
-                    this.drawDot(x, y, options);
+                    this.drawDot(x, y);
                 }
             }
         }
 
         this.charMarginCumulative += this.fullDotLength;
+    }
+
+    render() {
+        this.clear();
+        for (let i = 0; i < this.text.length; i++) {
+            this.drawChar(i, this.text[i]);
+        }
     }
 
     write(text, options = {}) {
@@ -105,16 +111,19 @@ export class Display {
             return;
         }
 
-        this.clear();
-        for (let i = 0; i < text.length; i++) {
-            this.drawChar(i, text[i], options);
+        if (options) {
+            for (const [key, value] of Object.entries(options)) {
+                this.options[key] = value;
+            }
         }
 
-        if (text != this.text) {
+        if (this.text !== text) {
             this.text = text;
             if (this.options.playSound) {
                 displayOn.play();
             }
         }
+
+        this.render();
     };
 }
