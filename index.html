@@ -27,6 +27,7 @@
         <object data="/images/refresh.svg" type="image/svg+xml" id="refresh-logo"></object>
     </div>
     <script>
+        const app = document.getElementById("app");
         const loadingLoop = document.getElementById("loading-loop");
 
         let count = 1;
@@ -42,10 +43,16 @@
             incrementLoadingAnimation();
         }, 100);
 
-        window.addEventListener("load", () => {
-            clearInterval(timeout);
-            loadingLoop.remove();
-        });
+        const callback = (mutationList, observer) => {
+            if (mutationList) {
+                clearInterval(timeout);
+                loadingLoop.remove();
+            }
+        }
+
+        const config = { childList: true };
+        const observer = new MutationObserver(callback);
+        observer.observe(app, config);
     </script>
 </body>
 </html>
