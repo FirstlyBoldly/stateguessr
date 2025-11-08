@@ -23,8 +23,6 @@ export const DisplayContainer = (app) => {
         const viewportWidth = document.getElementById("wrapper").clientWidth;
         const difference = Math.max(containerBaseWidth - viewportWidth, 0);
 
-        if (difference === 0) return;
-
         const newContainerWidth = containerBaseWidth - difference;
         const newCanvasStyleWidth = signBaseClientWidth - difference;
         const newCanvasWidth = newCanvasStyleWidth * signCanvasBaseWidth / signBaseClientWidth;
