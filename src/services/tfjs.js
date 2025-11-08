@@ -1,6 +1,6 @@
 import * as tf from "@tensorflow/tfjs";
-import metadata from "/model/metadata";
 
+const metadata = await fetch("/model/metadata.json").then(response => response.json());
 const model = await tf.loadLayersModel("/model/model.json");
 let logCounter = 0;
 
