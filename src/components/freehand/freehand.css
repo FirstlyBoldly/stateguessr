@@ -1,4 +1,5 @@
 .freehand {
     cursor: crosshair;
+    touch-action: none;
     background-color: var(--tertiary-color);
 }
