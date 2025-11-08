@@ -89,10 +89,22 @@ export const Board = (app) => {
 
     window.addEventListener("resize", () => {
         const canvasSize = calcFreehandSize();
+
+        const frontCanvas = document.getElementById("front-canvas");
+        const frontCanvasCtx = frontCanvas.getContext("2d");
+
+        const tempCanvas = document.createElement("canvas");
+        const tempCtx = tempCanvas.getContext("2d");
+        tempCanvas.width = frontCanvas.width;
+        tempCanvas.height = frontCanvas.height;
+        tempCtx.drawImage(frontCanvas, 0, 0);
+
         freehand1.width = freehand2.width = canvasSize;
         freehand1.height = freehand2.height = canvasSize;
         board.style.width = `${canvasSize}px`;
         board.style.height = `${canvasSize}px`;
+
+        frontCanvasCtx.drawImage(tempCanvas, 0, 0);
     });
 
     addFreehandShortcuts();
