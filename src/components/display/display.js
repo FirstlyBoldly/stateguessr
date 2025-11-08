@@ -78,6 +78,7 @@ export class Display {
 
     reset() {
         this.clear();
+        this.clearScroll();
         this.text = "";
     }
 
