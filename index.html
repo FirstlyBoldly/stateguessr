@@ -6,11 +6,13 @@
     <title>StateGuessr</title>
     <link rel="icon" type="image/x-icon" href="/images/stateguessr_icon.png">
     <link rel="stylesheet" type="text/css" href="/src/global.css">
-    <script type="module" src="/src/app.js"></script>
+    <script type="module" src="/src/app.js" defer></script>
 </head>
 <body>
     <div id="wrapper">
-        <div id="app"></div>
+        <div id="app">
+            <div id="loading-loop"></div>
+        </div>
         <footer>
             <strong>- 2025 Ankha's Greens -</strong>
             <span class="hide">
@@ -21,8 +23,29 @@
             </span>
         </footer>
     </div>
-    <div id="props">
+    <div id="props" class="hide">
         <object data="/images/refresh.svg" type="image/svg+xml" id="refresh-logo"></object>
     </div>
+    <script>
+        const loadingLoop = document.getElementById("loading-loop");
+
+        let count = 1;
+        const incrementLoadingAnimation = () => {
+            count %= 4;
+            loadingLoop.innerHTML = `<h1>Loading${".".repeat(count)}</h1>`;
+            count++;
+        }
+
+        incrementLoadingAnimation();
+
+        const timeout = setInterval(() => {
+            incrementLoadingAnimation();
+        }, 100);
+
+        window.addEventListener("load", () => {
+            clearInterval(timeout);
+            loadingLoop.remove();
+        });
+    </script>
 </body>
 </html>
