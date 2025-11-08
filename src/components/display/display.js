@@ -21,7 +21,12 @@ export class Display {
             backgroundColor: options.backgroundColor ?? Display.defaultBackgroundColor,
             playSound: options.playSound ?? true,
             changeWithViewport: options.changeWithViewport ?? false,
+            textScroll: options.textScroll ?? false,
+            textScrollGapInDots: options.textScrollGapInDots ?? 3,
+            scrollIntervalDelay: options.scrollIntervalDelay ?? 1000,
         };
+
+        this.scrollTimeout = null;
 
         this.charMarginCumulative = 0;
         this.fullDotLength = this.options.dotSize + this.options.dotPadding * 2;
@@ -71,6 +76,11 @@ export class Display {
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
+    reset() {
+        this.clear();
+        this.text = "";
+    }
+
     drawDot(x, y) {
         this.ctx.shadowBlur = this.options.shadowBlur || 15;
         this.ctx.shadowColor = this.options.shadowColor || "#FF4200";
@@ -85,6 +95,11 @@ export class Display {
             return;
         }
 
+        const firstDot = charIndex * this.charWidth + 1 * this.fullDotLength + this.options.dotPadding + this.charMarginCumulative;
+        if (firstDot + this.fullDotLength * this.options.charWidthInDots > this.canvas.width) {
+            return false;
+        }
+
         for (let rowIndex = 0; rowIndex < dotArray.length; rowIndex++) {
             for (let columnIndex = 0; columnIndex < dotArray[rowIndex].length; columnIndex++) {
                 if (dotArray[rowIndex][columnIndex]) {
@@ -96,18 +111,41 @@ export class Display {
         }
 
         this.charMarginCumulative += this.fullDotLength;
+        return true;
     }
 
     render() {
         this.clear();
         for (let i = 0; i < this.text.length; i++) {
-            this.drawChar(i, this.text[i]);
+            if (!this.drawChar(i, this.text[i])) {
+                this.setScroll(i);
+                return;
+            }
+        }
+
+        if (this.options.textScroll) {
+            this.setScroll();
+        } else {
+            this.clearScroll();
         }
     }
 
-    reset() {
-        this.clear();
-        this.text = "";
+    clearScroll() {
+        clearInterval(this.scrollTimeout);
+    }
+
+    setScroll(stopIndex) {
+        this.clearScroll();
+        let scrollText = this.text + " ".repeat(this.options.textScrollGapInDots);
+        this.scrollTimeout = setInterval(() => {
+            this.clear();
+            for (let i = 0; i < stopIndex; i++) {
+                this.drawChar(i, scrollText[i]);
+            }
+
+            let firstChar = scrollText[0];
+            scrollText = scrollText.slice(1) + firstChar;
+        }, this.options.scrollIntervalDelay);
     }
 
     write(text, options = {}) {
