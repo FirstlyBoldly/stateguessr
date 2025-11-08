@@ -19,7 +19,7 @@ if (app) {
     });
 
     window.addEventListener(canvasEvents.canvasCleared, () => {
-        sign.clear();
+        sign.reset();
         indicator.write("-");
     });
 

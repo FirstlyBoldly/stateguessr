@@ -9,7 +9,12 @@ const calcFreehandSize = () => {
     const displayContainer = document.getElementById("display-container");
     const displayContainerStyle = window.getComputedStyle(displayContainer);
     const displayContainerViewportOffsets = displayContainer.getBoundingClientRect();
-    return window.innerHeight - displayContainerViewportOffsets.bottom - parseInt(displayContainerStyle.marginBottom) * 2;
+    const wrapperClientWidth = document.getElementById("wrapper").clientWidth;
+    const newFreehandSize = Math.max(
+        window.innerHeight - displayContainerViewportOffsets.bottom - parseInt(displayContainerStyle.marginBottom) * 2,
+        224
+    );
+    return newFreehandSize > wrapperClientWidth ? wrapperClientWidth : newFreehandSize;
 };
 
 const resetFreehand = () => {
@@ -82,13 +87,13 @@ export const Board = (app) => {
 
     board.append(resetCanvas, freehand1, freehand2);
 
-    // window.addEventListener("resize", () => {
-    //     const canvasSize = calcFreehandSize();
-    //     freehand1.width = freehand2.width = canvasSize;
-    //     freehand1.height = freehand2.height = canvasSize;
-    //     board.style.width = `${canvasSize}px`;
-    //     board.style.height = `${canvasSize}px`;
-    // });
+    window.addEventListener("resize", () => {
+        const canvasSize = calcFreehandSize();
+        freehand1.width = freehand2.width = canvasSize;
+        freehand1.height = freehand2.height = canvasSize;
+        board.style.width = `${canvasSize}px`;
+        board.style.height = `${canvasSize}px`;
+    });
 
     addFreehandShortcuts();
 

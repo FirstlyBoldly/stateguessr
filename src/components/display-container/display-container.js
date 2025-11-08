@@ -18,16 +18,8 @@ export const DisplayContainer = (app) => {
     const signCanvasBaseWidth = sign.canvas.width;
 
     const resizeSign = () => {
-        const viewportWidth = window.innerWidth;
-
-        const containerStyle = window.getComputedStyle(container);
-        const containerMarginTotal =
-            parseFloat(containerStyle.marginLeft) +
-            parseFloat(containerStyle.marginRight);
-
-        console.log(containerMarginTotal);
-        const containerTotalWidth = containerBaseWidth + containerMarginTotal;
-        const difference = Math.max(containerTotalWidth - viewportWidth, 0);
+        const viewportWidth = document.getElementById("wrapper").clientWidth;
+        const difference = Math.max(containerBaseWidth - viewportWidth, 0);
 
         if (difference === 0) return;
 

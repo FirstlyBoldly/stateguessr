@@ -105,6 +105,11 @@ export class Display {
         }
     }
 
+    reset() {
+        this.clear();
+        this.text = "";
+    }
+
     write(text, options = {}) {
         if (!this.ctx) {
             this.canvas.innerText = text;

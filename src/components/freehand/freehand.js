@@ -47,8 +47,6 @@ const drawStroke = (ctx, points) => {
 export const Freehand = () => {
     const freehand = document.createElement("canvas");
     freehand.classList.add("freehand");
-    freehand.width = 224;
-    freehand.height = 224;
 
     const ctx = freehand.getContext("2d");
     freehand.addEventListener("pointerdown", (e) => {
