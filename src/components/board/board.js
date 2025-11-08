@@ -45,12 +45,16 @@ const resetFreehand = () => {
 
 const resetFreehandButton = () => {
     const button = Button(
-        "",
+        "Reset",
         () => { resetFreehand(); }
     );
     button.id = "reset-button";
     const refreshLogo = document.getElementById("refresh-logo");
-    button.appendChild(refreshLogo);
+    if (refreshLogo) {
+        button.innerHTML = "";
+        button.appendChild(refreshLogo);
+    }
+
     return button;
 };
 
