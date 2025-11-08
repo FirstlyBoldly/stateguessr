@@ -11,11 +11,11 @@ export const predictState = (pixels) => {
 
     const result = model.predict(tensor);
     const maxValue = Math.max(...result.as1D().dataSync());
-    console.log(`[${logCounter}] Max Probability Value: ${maxValue}`);
+    // console.log(`[${logCounter}] Max Probability Value: ${maxValue}`);
 
     const index = result.as1D().argMax().dataSync()[0];
     const state = metadata["class_names"][index];
-    console.log(`[${logCounter}] Predicted State: ${state}`);
+    // console.log(`[${logCounter}] Predicted State: ${state}`);
 
     logCounter++;
     return state;

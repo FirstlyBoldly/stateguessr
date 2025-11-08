@@ -33,6 +33,15 @@ export const clearCanvas = (ctx, width, height) => {
     window.dispatchEvent(canvasCleared());
 };
 
+const getCoordsFromEvent = (e, freehand) => {
+    const rect = freehand.getBoundingClientRect();
+    return {
+        x: e.offsetX ?? e.touches[0].clientX - rect.left,
+        y: e.offsetY ?? e.touches[0].clientY - rect.top,
+        pressure: e.pressure ?? 0.5,
+    }
+}
+
 const drawStroke = (ctx, points) => {
     ctx.beginPath();
     ctx.moveTo(points[0][0], points[0][1]);
@@ -44,53 +53,77 @@ const drawStroke = (ctx, points) => {
     ctx.stroke();
 };
 
+const handleDown = (e, freehand) => {
+    if (e.type === "touchstart") {
+        e.preventDefault();
+    }
+
+    isDrawing = true;
+    inputs = [getCoordsFromEvent(e, freehand)];
+    clearInterval(timeout);
+    timeout = setInterval(() => {
+        window.dispatchEvent(canvasUpdated());
+    }, 3000);
+};
+
+const handleMove = (e, freehand) => {
+    if (e.type === "touchmove") {
+        e.preventDefault();
+    }
+
+    if (!isDrawing) {
+        return;
+    }
+
+    inputs.push(getCoordsFromEvent(e, freehand));
+    const output = getStroke(inputs, options);
+    drawStroke(freehand.getContext("2d"), output);
+};
+
+const handleLeave = (e, ctx) => {
+    if (e.type === "touchcancel") {
+        e.preventDefault();
+    }
+
+    if (isDrawing) {
+        stopDrawing(ctx);
+    }
+};
+
+const handleUp = (e, ctx) => {
+    if (e.type === "touchend") {
+        e.preventDefault();
+    }
+
+    stopDrawing(ctx);
+};
+
+const stopDrawing = (ctx) => {
+    isDrawing = false;
+    ctx.closePath();
+
+    window.dispatchEvent(canvasUpdated());
+
+    clearInterval(timeout);
+    timeout = null;
+};
+
 export const Freehand = () => {
     const freehand = document.createElement("canvas");
+    const ctx = freehand.getContext("2d");
     freehand.classList.add("freehand");
 
-    const ctx = freehand.getContext("2d");
-    freehand.addEventListener("pointerdown", (e) => {
-        isDrawing = true;
-        inputs = [{
-            x: e.offsetX,
-            y: e.offsetY,
-            pressure: e.pressure
-        }];
-        timeout = setInterval(() => {
-            window.dispatchEvent(canvasUpdated());
-        }, 3000);
-    });
+    freehand.addEventListener("mousedown", (e) => { handleDown(e, freehand); });
+    freehand.addEventListener("touchstart", (e) => { handleDown(e, freehand); }, { passive: false });
 
-    freehand.addEventListener("pointermove", (e) => {
-        if (!isDrawing) return;
-        inputs.push({
-            x: e.offsetX,
-            y: e.offsetY,
-            pressure: e.pressure
-        });
-        const output = getStroke(inputs, options);
-        drawStroke(ctx, output);
-    });
+    freehand.addEventListener("mousemove", (e) => { handleMove(e, freehand); });
+    freehand.addEventListener("touchmove", (e) => { handleMove(e, freehand); }, { passive: false });
 
-    const stopDrawing = () => {
-        isDrawing = false;
-        ctx.closePath();
+    freehand.addEventListener("mouseleave", (e) => { handleLeave(e, ctx); });
+    freehand.addEventListener("touchcancel", (e) => { handleLeave(e, ctx); }, { passive: false });
 
-        window.dispatchEvent(canvasUpdated());
-
-        clearInterval(timeout);
-        timeout = null;
-    };
-
-    freehand.addEventListener("pointerleave", () => {
-        if (isDrawing) {
-            stopDrawing();
-        }
-    });
-
-    freehand.addEventListener("pointerup", () => {
-        stopDrawing();
-    });
+    freehand.addEventListener("mouseup", (e) => { handleUp(e, ctx); });
+    freehand.addEventListener("touchend", (e) => { handleUp(e, ctx); }, { passive: false });
 
     return freehand;
 };
