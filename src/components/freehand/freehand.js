@@ -45,7 +45,7 @@ const drawStroke = (ctx, points) => {
 };
 
 const handleDown = (e) => {
-    if (e.type === "touchdown") e.preventDefault();
+    if (e.type === "touchstart") e.preventDefault();
     isDrawing = true;
     inputs = [{
         x: e.offsetX,
@@ -58,7 +58,7 @@ const handleDown = (e) => {
 };
 
 const handleMove = (e, ctx) => {
-    if (e.type === "touchmove") e.preventDefault();
+    // if (e.type === "touchmove") e.preventDefault();
     if (!isDrawing) return;
     inputs.push({
         x: e.offsetX,
@@ -70,12 +70,12 @@ const handleMove = (e, ctx) => {
 };
 
 const handleLeave = (e, ctx) => {
-    if (e.type === "touchleave") e.preventDefault();
+    // if (e.type === "touchcancel") e.preventDefault();
     if (isDrawing) stopDrawing(ctx);
 };
 
 const handleUp = (e, ctx) => {
-    if (e.type === "touchup") e.preventDefault();
+    // if (e.type === "touchend") e.preventDefault();
     stopDrawing(ctx);
 };
 
@@ -95,16 +95,16 @@ export const Freehand = () => {
     freehand.classList.add("freehand");
 
     freehand.addEventListener("pointerdown", (e) => { handleDown(e); });
-    freehand.addEventListener("touchdown", (e) => { handleDown(e); });
+    freehand.addEventListener("touchstart", (e) => { handleDown(e); });
 
     freehand.addEventListener("pointermove", (e) => { handleMove(e, ctx); });
     freehand.addEventListener("touchmove", (e) => { handleMove(e, ctx); });
 
     freehand.addEventListener("pointerleave", (e) => { handleLeave(e, ctx); });
-    freehand.addEventListener("touchleave", (e) => { handleLeave(e, ctx); });
+    freehand.addEventListener("touchcancel", (e) => { handleLeave(e, ctx); });
 
     freehand.addEventListener("pointerup", (e) => { handleUp(e, ctx); });
-    freehand.addEventListener("touchup", (e) => { handleUp(e, ctx); });
+    freehand.addEventListener("touchend", (e) => { handleUp(e, ctx); });
 
     return freehand;
 };
