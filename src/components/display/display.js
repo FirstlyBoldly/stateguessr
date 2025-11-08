@@ -95,30 +95,35 @@ export class Display {
             return;
         }
 
-        const firstDot = charIndex * this.charWidth + 1 * this.fullDotLength + this.options.dotPadding + this.charMarginCumulative;
-        if (firstDot + this.fullDotLength * this.options.charWidthInDots > this.canvas.width) {
-            return false;
-        }
+        const calcX = (index) => {
+            return charIndex * this.charWidth + (index + 1) * this.fullDotLength + this.options.dotPadding + this.charMarginCumulative;
+        };
 
+        const calcY = (index) => {
+            return (index + 1) * this.fullDotLength + this.options.dotPadding;
+        };
+
+        const firstDot = calcX(0);
+        const ok = firstDot + this.fullDotLength * this.options.charWidthInDots - 1 < this.canvas.width ? true : false;
         for (let rowIndex = 0; rowIndex < dotArray.length; rowIndex++) {
             for (let columnIndex = 0; columnIndex < dotArray[rowIndex].length; columnIndex++) {
                 if (dotArray[rowIndex][columnIndex]) {
-                    const x = charIndex * this.charWidth + (columnIndex + 1) * this.fullDotLength + this.options.dotPadding + this.charMarginCumulative;
-                    const y = (rowIndex + 1) * this.fullDotLength + this.options.dotPadding;
+                    const x = calcX(columnIndex);
+                    const y = calcY(rowIndex);
                     this.drawDot(x, y);
                 }
             }
         }
 
         this.charMarginCumulative += this.fullDotLength;
-        return true;
+        return ok;
     }
 
     render() {
         this.clear();
         for (let i = 0; i < this.text.length; i++) {
             if (!this.drawChar(i, this.text[i])) {
-                this.setScroll(i);
+                this.setScroll(i + 1);
                 return;
             }
         }
