@@ -1,0 +1,9 @@
+.end-menu {
+    transform: translateX(-100%) !important;
+}
+
+.end-menu-button-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: var(--gap-large);
+}

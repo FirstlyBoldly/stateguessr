@@ -1,9 +1,3 @@
-#start-button {
-    color: var(--tertiary-color);
-    background-color: var(--complementary-color);
-    padding: var(--gap-normal);
-}
-
 .tips ul {
     margin: var(--gap-normal) 0;
     padding-left: var(--gap-xlarge);

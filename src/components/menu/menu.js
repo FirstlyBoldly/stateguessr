@@ -2,16 +2,16 @@ import "./menu.css";
 
 export const Menu = () => {
     const menu = document.createElement("div");
-    menu.id = "menu";
+    menu.classList.add("menu");
 
     const menuWrapper = document.createElement("div");
-    menuWrapper.id = "menu-wrapper";
+    menuWrapper.classList.add("menu-wrapper");
 
     const contentWrapper = document.createElement("div");
-    contentWrapper.id = "menu-content-wrapper";
+    contentWrapper.classList.add("menu-content-wrapper");
 
     const buttonWrapper = document.createElement("div");
-    buttonWrapper.id = "menu-button-wrapper";
+    buttonWrapper.classList.add("menu-button-wrapper");
 
     menuWrapper.append(contentWrapper, buttonWrapper);
     menu.appendChild(menuWrapper);

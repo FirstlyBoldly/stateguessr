@@ -30,11 +30,14 @@ export const StartMenu = () => {
         `;
     }
 
+    const handler = () => {
+        menu.removeEventListener("transitionend", handler);
+        menu.remove();
+    };
+
     const startButton = Button("OK, LET'S START!", () => {
-        menu.classList.add("read");
-        menu.addEventListener("transitionend", () => {
-            menu.remove();
-        });
+        menu.classList.add("closed");
+        menu.addEventListener("transitionend", handler);
     });
     startButton.id = "start-button";
 
