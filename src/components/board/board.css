@@ -8,13 +8,17 @@
     position: absolute;
 }
 
-#reset-button {
+#reset-button, #goal-display-button {
     margin: var(--gap-small);
     position: absolute;
     z-index: 99;
 }
 
-#reset-button object {
+#goal-display-button {
+    right: var(--gap-normal);
+}
+
+#reset-button object, #goal-display-button object {
     pointer-events: none;
 }
 

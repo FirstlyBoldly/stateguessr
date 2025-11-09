@@ -1,28 +1,40 @@
 import "./menu.css";
-import { Button } from "../button";
 
 export const Menu = () => {
     const menu = document.createElement("div");
     menu.id = "menu";
 
-    const title = document.createElement("h1");
-    title.innerHTML = "<strong>StateGuessr</strong>";
+    const menuWrapper = document.createElement("div");
+    menuWrapper.id = "menu-wrapper";
 
-    const text = document.createElement("p");
-    text.innerHTML = `
-        Draw a state of the <strong>United States of America</strong> and see if an AI model can guess it!
-        </br>
-        <strong>Ctrl+q</strong> to reset if on browser.
-        </br>
-        <small>P.S. <i>Very much WIP...</i></small>
-    `;
+    const contentWrapper = document.createElement("div");
+    contentWrapper.id = "menu-content-wrapper";
 
-    const startButton = Button("START", () => {
-        menu.classList.add("read");
+    const buttonWrapper = document.createElement("div");
+    buttonWrapper.id = "menu-button-wrapper";
+
+    menuWrapper.append(contentWrapper, buttonWrapper);
+    menu.appendChild(menuWrapper);
+
+    const displayContainer = document.getElementById("display-container");
+    const footer = document.getElementsByTagName("footer")[0];
+    const displayContainerStyleBottom = () => {
+        const style = window.getComputedStyle(displayContainer);
+        return displayContainer.getBoundingClientRect().bottom + window.scrollY + parseFloat(style.marginBottom);
+    };
+
+    const wrapper = document.getElementById("wrapper");
+    const footerStyleTop = () => {
+        const style = window.getComputedStyle(wrapper);
+        return footer.getBoundingClientRect().top + window.scrollY - parseFloat(style.margin);
+    };
+
+    menu.style.top = `${displayContainerStyleBottom()}px`;
+    menu.style.height = `${footerStyleTop() - displayContainerStyleBottom()}px`;
+    window.addEventListener("resize", () => {
+        menu.style.top = `${displayContainerStyleBottom()}px`;
+        menu.style.height = `${footerStyleTop() - displayContainerStyleBottom()}px`;
     });
-    startButton.id = "start-button";
 
-    menu.append(title, text, startButton);
-
-    return menu;
+    return [menu, contentWrapper, buttonWrapper];
 }

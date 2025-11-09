@@ -2,11 +2,11 @@
     border: none;
     background: none;
     font-size: 2rem;
-    font-weight: 700;
+    font-weight: bold;
     color: var(--primary-color);
     background-color: var(--secondary-color);
-    box-shadow: var(--gap-small) var(--gap-small) var(--primary-color);
-    transition: transform 0.2s;
+    box-shadow: var(--gap-normal) var(--gap-normal) var(--primary-color);
+    transition: transform 0.2s ease-out;
 }
 
 .button-class:hover {
@@ -15,10 +15,10 @@
 
 .button-class:active {
     box-shadow: none;
-    transform: translate(2px, 2px);
+    transform: translate(8px, 8px);
 }
 
 .button-is-pressed {
-    transform: translate(1px, 1px);
     box-shadow: none;
+    transform: translate(8px, 8px);
 }

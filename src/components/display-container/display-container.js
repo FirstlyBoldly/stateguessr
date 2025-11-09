@@ -21,7 +21,7 @@ export const DisplayContainer = (app) => {
 
     const resizeSign = () => {
         const viewportWidth = document.getElementById("wrapper").clientWidth;
-        const difference = Math.max(containerBaseWidth - viewportWidth, 0);
+        const difference = containerBaseWidth - viewportWidth;
 
         const newContainerWidth = containerBaseWidth - difference;
         const newCanvasStyleWidth = signBaseClientWidth - difference;
@@ -53,5 +53,5 @@ export const DisplayContainer = (app) => {
     });
 
     resizeSign();
-    return [sign, indicator];
+    return container;
 };

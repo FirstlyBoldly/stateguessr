@@ -50,6 +50,8 @@ const resetFreehandButton = () => {
     );
     button.id = "reset-button";
     const refreshLogo = document.getElementById("refresh-logo");
+    refreshLogo.setAttribute("width", "24px");
+    refreshLogo.setAttribute("height", "24px");
     if (refreshLogo) {
         button.innerHTML = "";
         button.appendChild(refreshLogo);
@@ -57,6 +59,25 @@ const resetFreehandButton = () => {
 
     return button;
 };
+
+const displayGoalButton = () => {
+    const button = Button(
+        "Goal",
+        () => {
+
+        }
+    );
+    button.id = "goal-display-button";
+    const targetFlagLogo = document.getElementById("target-flag-logo");
+    targetFlagLogo.setAttribute("width", "24px");
+    targetFlagLogo.setAttribute("height", "24px");
+    if (targetFlagLogo) {
+        button.innerHTML = "";
+        button.appendChild(targetFlagLogo);
+    }
+
+    return button;
+}
 
 const addFreehandShortcuts = () => {
     document.addEventListener("keydown", (e) => {
@@ -72,7 +93,7 @@ const addFreehandShortcuts = () => {
     });
 };
 
-export const Board = (app) => {
+export const Board = () => {
     const board = document.createElement("div");
     board.id = "board";
 
@@ -88,8 +109,9 @@ export const Board = (app) => {
     board.style.height = `${canvasSize}px`;
 
     const resetCanvas = resetFreehandButton();
+    const displayGoal = displayGoalButton();
 
-    board.append(resetCanvas, freehand1, freehand2);
+    board.append(resetCanvas, displayGoal, freehand1, freehand2);
 
     window.addEventListener("resize", () => {
         const canvasSize = calcFreehandSize();
@@ -113,5 +135,5 @@ export const Board = (app) => {
 
     addFreehandShortcuts();
 
-    app.appendChild(board);
+    return board;
 };
