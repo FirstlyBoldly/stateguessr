@@ -1,9 +1,10 @@
 import "./global.css";
 import { StartMenu } from "./components/start-menu";
-import { EndMenu } from "./components/end-menu/end-menu";
+import { EndMenu, insertPlayerGallery } from "./components/end-menu/end-menu";
 import { DisplayContainer } from "./components/display-container";
 import { Board, resetFreehand } from "./components/board";
 import { ImageShow } from "./components/image-show/image-show";
+import { RoundMenu } from "./components/round-menu/round-menu";
 
 const app = document.getElementById("app");
 if (app) {
@@ -28,7 +29,10 @@ if (app) {
         let roundTimeout = null;
         let roundInterval = null;
 
-        let gameImages = [];
+        let playerImages = {};
+        let state = null;
+
+        let roundImages = [];
         const states = import.meta.glob("/src/assets/states/*.jpg");
 
         const choice = () => {
@@ -45,17 +49,17 @@ if (app) {
         const getUniqueGameState = () => {
             const imgPath = choice();
             while (true) {
-                if (imgPath in Object.keys(gameImages)) {
+                if (imgPath in Object.keys(roundImages)) {
                     imgPath = choice();
                 } else {
-                    gameImages.push(imgPath);
+                    roundImages.push(imgPath);
                     return imgPath;
                 }
             }
         };
 
         const endGame = () => {
-            resetFreehand();
+            playerImages[state] = resetFreehand();
 
             sign.write("TIME IS UP");
             indicator.write("!");
@@ -67,11 +71,14 @@ if (app) {
             clearTimeout(roundTimeout);
 
             board.style.pointerEvents = "none";
-            endMenu.style.pointerEvents = "auto";
-            endMenu.style.display = "inline";
-            endMenu.classList.add("opened");
 
-            gameImages = [];
+            insertPlayerGallery(playerImages);
+
+            endMenu.style.pointerEvents = "auto";
+            endMenu.classList.add("opened");
+            endMenu.style.display = "inline";
+
+            roundImages = [];
         };
 
         const endRound = () => {
@@ -81,7 +88,8 @@ if (app) {
             indicator.lock();
 
             board.style.pointerEvents = "none";
-            resetFreehand();
+
+            playerImages[state] = resetFreehand();
 
             round();
         };
@@ -94,34 +102,43 @@ if (app) {
             sign.lock();
             indicator.lock();
 
-            const statePath = getUniqueGameState();
-            states[statePath]().then(module => {
+            state = getUniqueGameState();
+            states[state]().then(module => {
                 img.src = module.default;
-            });
+                const roundMenu = RoundMenu(state, module.default);
+                app.append(roundMenu);
+                roundMenu.classList.add("opened");
 
-            setTimeout(() => {
-                sign.unlock();
-                indicator.unlock();
-                sign.write("STATEGUESSR");
-                indicator.write("!");
+                setTimeout(() => {
+                    roundMenu.classList.remove("opened");
+                    roundMenu.classList.add("closed");
+                    roundMenu.addEventListener("transitionend", () => {
+                        roundMenu.remove();
+                    });
 
-                board.style.pointerEvents = "auto";
-                let remainingSeconds = roundDurationInSeconds;
+                    sign.unlock();
+                    indicator.unlock();
+                    sign.write("STATEGUESSR");
+                    indicator.write("!");
 
-                roundInterval = setInterval(() => {
-                    remainingSeconds--;
-                    if (remainingSeconds === 0) {
-                        roundNumber++;
-                        clearInterval(roundInterval);
-                        if (roundNumber > maxRounds) {
-                            endGame();
-                            return;
-                        } else {
-                            endRound();
+                    board.style.pointerEvents = "auto";
+                    let remainingSeconds = roundDurationInSeconds;
+
+                    roundInterval = setInterval(() => {
+                        remainingSeconds--;
+                        if (remainingSeconds === 0) {
+                            roundNumber++;
+                            clearInterval(roundInterval);
+                            if (roundNumber > maxRounds) {
+                                endGame();
+                                return;
+                            } else {
+                                endRound();
+                            }
                         }
-                    }
-                }, 1000);
-            }, 2000);
+                    }, 1000);
+                }, 2000);
+            });
         };
 
         document.getElementById("start-again-button").addEventListener("click", () => {

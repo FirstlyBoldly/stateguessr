@@ -2,9 +2,34 @@ import "./end-menu.css";
 import { Menu } from "../menu";
 import { Button } from "../button";
 
+export const insertPlayerGallery = (playerImages) => {
+    const gallery = document.createElement("div");
+    gallery.id = "end-menu-player-gallery";
+
+    console.log(playerImages);
+    for (const [state, imageSource] of Object.entries(playerImages)) {
+        const wrapper = document.createElement("div");
+        wrapper.classList.add("end-menu-gallery-wrapper");
+
+        const title = document.createElement("h3");
+        title.innerText = state;
+
+        const img = document.createElement("img");
+        img.src = imageSource;
+
+        wrapper.append(title, img);
+
+        gallery.appendChild(wrapper);
+    }
+
+    const endMenuContentWrapper = document.getElementById("end-menu-content-wrapper");
+    endMenuContentWrapper.appendChild(gallery);
+};
+
 export const EndMenu = () => {
     const [menu, menuContentWrapper, menuButtonWrapper] = Menu();
-    menu.classList.add("end-menu");
+    menu.id = "end-menu";
+    menuContentWrapper.id = "end-menu-content-wrapper";
 
     const text = document.createElement("div");
     text.innerText = "bleh...";
@@ -19,8 +44,8 @@ export const EndMenu = () => {
     const startAgainHandler = () => {
         menu.removeEventListener("transitionend", startAgainHandler);
         menu.style.pointerEvents = "none";
-        menu.style.display = "none";
         menu.classList.remove("closed");
+        menu.style.display = "none";
     };
 
     const onChange = (handler) => {
@@ -43,7 +68,7 @@ export const EndMenu = () => {
     const sandboxModeButton = Button("Sandbox Mode", sandboxOnChange);
     sandboxModeButton.id = "sandbox-mode-button";
 
-    menuButtonWrapper.classList.add("end-menu-button-wrapper");
+    menuButtonWrapper.id = "end-menu-button-wrapper";
     menuButtonWrapper.append(startAgainButton, sandboxModeButton);
 
     return menu;

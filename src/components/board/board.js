@@ -5,6 +5,17 @@ import { Freehand, clearCanvas } from "../freehand";
 const rippingPaperSoundEffect = new Audio("/sounds/ripping-paper.mp3");
 let freehandIsTransitioning = false;
 
+const getCopyURL = (canvas) => {
+    const tempCanvas = document.createElement("canvas");
+    const tempCtx = tempCanvas.getContext("2d");
+
+    tempCanvas.width = canvas.width;
+    tempCanvas.height = canvas.height;
+    tempCtx.drawImage(canvas, 0, 0);
+
+    return tempCanvas.toDataURL();
+};
+
 export const calcFreehandSize = () => {
     const displayContainer = document.getElementById("display-container");
     const displayContainerStyle = window.getComputedStyle(displayContainer);
@@ -41,6 +52,8 @@ export const resetFreehand = () => {
     );
     front.classList.add("dropped");
     rippingPaperSoundEffect.play();
+
+    return getCopyURL(front);
 }
 
 const resetFreehandButton = () => {
