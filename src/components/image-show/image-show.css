@@ -1,10 +1,8 @@
 #image-show {
     z-index: 9999;
     position: absolute;
-    background-color: var(--tertiary-color);
+    background-color: white;
     animation: pulse-glow 5s infinite alternate;
-    transition: transfrom 1s ease-in-out;
-    transform: translateY(100%);
     display: none;
 }
 
@@ -14,10 +12,6 @@
     object-fit: contain;
 }
 
-#image-show.opened {
-    transform: translateY(0);
-}
-
 #image-show-close-button {
     z-index: 999;
     position: absolute;
@@ -25,5 +19,5 @@
     right: 0;
     margin: var(--gap-small);
     right: var(--gap-normal);
-    line-height: 24px;
+    line-height: 32px;
 }

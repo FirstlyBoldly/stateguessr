@@ -65,7 +65,6 @@ const displayGoalButton = () => {
         "Goal",
         () => {
             const imageShow = document.getElementById("image-show");
-            imageShow.classList.add("opened");
             imageShow.style.display = "inline";
         }
     );

@@ -18,13 +18,13 @@ if (app) {
 
         const board = Board();
         const endMenu = EndMenu();
-        const [imageShow, img] = ImageShow();
+        const [imageShow, img, imageShowCloseButton] = ImageShow();
 
         app.append(board, imageShow, endMenu);
 
         const roundDurationInSeconds = 3;
         const maxRounds = 1;
-        let roundNumber = 0;
+        let roundNumber = 1;
         let roundTimeout = null;
         let roundInterval = null;
 
@@ -57,7 +57,7 @@ if (app) {
         const endGame = () => {
             resetFreehand();
 
-            sign.write("DONE");
+            sign.write("TIME IS UP");
             indicator.write("!");
 
             sign.lock();
@@ -75,16 +75,18 @@ if (app) {
         };
 
         const endRound = () => {
-            board.style.pointerEvents = "none";
+            imageShowCloseButton.click();
+
             sign.lock();
             indicator.lock();
+
+            board.style.pointerEvents = "none";
             resetFreehand();
+
             round();
         };
 
         const round = () => {
-            roundNumber++;
-
             sign.unlock();
             indicator.unlock();
             sign.write(`ROUND:${roundNumber}`);
@@ -109,6 +111,7 @@ if (app) {
                 roundInterval = setInterval(() => {
                     remainingSeconds--;
                     if (remainingSeconds === 0) {
+                        roundNumber++;
                         clearInterval(roundInterval);
                         if (roundNumber > maxRounds) {
                             endGame();
@@ -123,7 +126,7 @@ if (app) {
 
         document.getElementById("start-again-button").addEventListener("click", () => {
             board.style.pointerEvents = "auto";
-            roundNumber = 0;
+            roundNumber = 1;
 
             sign.unlock();
             indicator.unlock();

@@ -21,11 +21,7 @@ export const ImageShow = () => {
     };
 
     const closeButton = Button("X", () => {
-        imageShow.classList.remove("opened");
-        imageShow.addEventListener("transitionend", function handler() {
-            imageShow.removeEventListener("transitionend", handler);
-            imageShow.style.display = "none";
-        });
+        imageShow.style.display = "none";
     });
     closeButton.id = "image-show-close-button";
 
@@ -34,5 +30,5 @@ export const ImageShow = () => {
     imageShow.append(closeButton, img);
 
     resizeImageShow();
-    return [imageShow, img];
+    return [imageShow, img, closeButton];
 };
