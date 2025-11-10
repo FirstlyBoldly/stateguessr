@@ -76,22 +76,21 @@ if (app) {
 
         const endRound = () => {
             board.style.pointerEvents = "none";
-            resetFreehand();
-
-            sign.write(`ROUND:${roundNumber}`);
-            indicator.write("-");
             sign.lock();
             indicator.lock();
+            resetFreehand();
             round();
         };
 
         const round = () => {
+            roundNumber++;
+
             sign.unlock();
             indicator.unlock();
-            sign.write("STATEGUESSR");
-            indicator.write("!");
-
-            roundNumber++;
+            sign.write(`ROUND:${roundNumber}`);
+            indicator.write("-");
+            sign.lock();
+            indicator.lock();
 
             const statePath = getUniqueGameState();
             states[statePath]().then(module => {
@@ -99,8 +98,14 @@ if (app) {
             });
 
             setTimeout(() => {
+                sign.unlock();
+                indicator.unlock();
+                sign.write("STATEGUESSR");
+                indicator.write("!");
+
                 board.style.pointerEvents = "auto";
                 let remainingSeconds = roundDurationInSeconds;
+
                 roundInterval = setInterval(() => {
                     remainingSeconds--;
                     if (remainingSeconds === 0) {
