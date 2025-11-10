@@ -53,5 +53,5 @@ export const DisplayContainer = (app) => {
     });
 
     resizeSign();
-    return container;
+    return [container, sign, indicator];
 };

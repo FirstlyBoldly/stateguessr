@@ -1,0 +1,29 @@
+#image-show {
+    z-index: 9999;
+    position: absolute;
+    background-color: var(--tertiary-color);
+    animation: pulse-glow 5s infinite alternate;
+    transition: transfrom 1s ease-in-out;
+    transform: translateY(100%);
+    display: none;
+}
+
+#image-show-display-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+#image-show.opened {
+    transform: translateY(0);
+}
+
+#image-show-close-button {
+    z-index: 999;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: var(--gap-small);
+    right: var(--gap-normal);
+    line-height: 24px;
+}

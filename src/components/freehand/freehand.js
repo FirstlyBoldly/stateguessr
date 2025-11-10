@@ -10,6 +10,7 @@ const options = {
 };
 let timeout = null;
 let isDrawing = false;
+let roundEnded = false;
 let inputs = [];
 
 export const canvasEvents = {
@@ -17,11 +18,11 @@ export const canvasEvents = {
     canvasCleared: "canvas:reset",
 }
 
-const canvasUpdated = () => {
+export const canvasUpdated = () => {
     return new CustomEvent(canvasEvents.canvasUpdated);
 };
 
-const canvasCleared = () => {
+export const canvasCleared = () => {
     return new CustomEvent(canvasEvents.canvasCleared);
 };
 
@@ -62,7 +63,9 @@ const handleDown = (e, freehand) => {
     inputs = [getCoordsFromEvent(e, freehand)];
     clearInterval(timeout);
     timeout = setInterval(() => {
-        window.dispatchEvent(canvasUpdated());
+        if (roundEnded) {
+            window.dispatchEvent(canvasUpdated());
+        }
     }, 3000);
 };
 

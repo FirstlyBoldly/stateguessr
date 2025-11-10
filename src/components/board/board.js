@@ -5,7 +5,7 @@ import { Freehand, clearCanvas } from "../freehand";
 const rippingPaperSoundEffect = new Audio("/sounds/ripping-paper.mp3");
 let freehandIsTransitioning = false;
 
-const calcFreehandSize = () => {
+export const calcFreehandSize = () => {
     const displayContainer = document.getElementById("display-container");
     const displayContainerStyle = window.getComputedStyle(displayContainer);
     const displayContainerViewportOffsets = displayContainer.getBoundingClientRect();
@@ -17,7 +17,7 @@ const calcFreehandSize = () => {
     return newFreehandSize > wrapperClientWidth ? wrapperClientWidth : newFreehandSize;
 };
 
-const resetFreehand = () => {
+export const resetFreehand = () => {
     if (freehandIsTransitioning) return;
     freehandIsTransitioning = true;
 
@@ -46,7 +46,7 @@ const resetFreehand = () => {
 const resetFreehandButton = () => {
     const button = Button(
         "Reset",
-        () => { resetFreehand(); }
+        resetFreehand
     );
     button.id = "reset-button";
     const refreshLogo = document.getElementById("refresh-logo");
@@ -64,7 +64,9 @@ const displayGoalButton = () => {
     const button = Button(
         "Goal",
         () => {
-
+            const imageShow = document.getElementById("image-show");
+            imageShow.classList.add("opened");
+            imageShow.style.display = "inline";
         }
     );
     button.id = "goal-display-button";

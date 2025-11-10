@@ -26,6 +26,8 @@ export class Display {
             scrollIntervalDelay: options.scrollIntervalDelay ?? 1000,
         };
 
+        this.locked = false;
+
         this.scrollTimeout = null;
 
         this.charMarginCumulative = 0;
@@ -155,6 +157,10 @@ export class Display {
     }
 
     write(text, options = {}) {
+        if (this.locked) {
+            return;
+        }
+
         if (!this.ctx) {
             this.canvas.innerText = text;
             return;
@@ -175,4 +181,12 @@ export class Display {
 
         this.render();
     };
+
+    lock() {
+        this.locked = true;
+    }
+
+    unlock() {
+        this.locked = false;
+    }
 }

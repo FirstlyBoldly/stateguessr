@@ -20,9 +20,11 @@ export const EndMenu = () => {
         menu.removeEventListener("transitionend", startAgainHandler);
         menu.style.pointerEvents = "none";
         menu.style.display = "none";
+        menu.classList.remove("closed");
     };
 
     const onChange = (handler) => {
+        menu.classList.remove("opened");
         menu.classList.add("closed");
         menu.addEventListener("transitionend", handler);
     };
@@ -42,10 +44,7 @@ export const EndMenu = () => {
     sandboxModeButton.id = "sandbox-mode-button";
 
     menuButtonWrapper.classList.add("end-menu-button-wrapper");
-    menuButtonWrapper.append(
-        startAgainButton,
-        sandboxModeButton
-    );
+    menuButtonWrapper.append(startAgainButton, sandboxModeButton);
 
     return menu;
 };
