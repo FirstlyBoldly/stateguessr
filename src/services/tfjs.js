@@ -1,7 +1,7 @@
 import * as tf from "@tensorflow/tfjs";
 
-const metadata = await fetch("src/assets/model/metadata.json").then(response => response.json());
-const model = await tf.loadLayersModel("src/assets/model/model.json");
+const metadata = await fetch("/model/metadata.json").then(response => response.json());
+const model = await tf.loadLayersModel("/model/model.json");
 let logCounter = 0;
 
 export const predictState = (pixels) => {
