@@ -1,48 +1,40 @@
 import "./start-menu.css";
-import { Menu } from "../menu";
-import { Button } from "../button";
+import { MenuPrototype } from "../menu";
 
-// Courtesy of Aria Noorghorbani, accessed from https://stackoverflow.com/questions/77506413/detecting-if-the-user-is-on-desktop-or-mobile-in-the-browser.
-var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
-export const StartMenu = () => {
-    const [menu, menuContentWrapper, menuButtonWrapper] = Menu();
+export class StartMenu extends MenuPrototype {
+    // Courtesy of Aria Noorghorbani, accessed from https://stackoverflow.com/questions/77506413/detecting-if-the-user-is-on-desktop-or-mobile-in-the-browser.
+    static isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
-    const introduction = document.createElement("div");
-    introduction.classList.add("introduction");
-    introduction.innerHTML = `
-        <p>
-            Draw a state of the
-            <strong>United States of America</strong></br>
-            and see if an AI model can guess it!
-        </p>
-    `;
+    constructor(initialState = "opened") {
+        super(initialState);
 
-    let tips = "";
-    if (!isMobile) {
-        tips = document.createElement("div");
-        tips.classList.add("tips");
-        tips.innerHTML = `
-            <h2>Useful Commands</h2>
-            <ul>
-                <li>Ctrl+q: Reset Canvas</li>
-            </ul>
+        const summary = document.createElement("div");
+        summary.id = "start-menu-summary";
+        summary.innerHTML = `
+            <h1>Welcome</h1>
+            <p>
+                Draw a state of the <strong>United States of America</strong></br>
+                and see if an AI model can guess it!
+            </p>
         `;
+
+        let tips = "";
+        if (!StartMenu.isMobile) {
+            tips = document.createElement("div");
+            tips.id = "start-menu-player-tips";
+            tips.innerHTML = `
+                <h1>Useful Commands</h1>
+                <ul>
+                    <li>Ctrl+q or [RESET-ICON]: Reset Canvas</li>
+                    <li>[FLAG-ICON]: See goal</li>
+                </ul>
+            `;
+        }
+
+        this.closeButton.innerText = "start";
+        this.closeButton.id = "start-button";
+
+        this.contentWrapper.append(summary, tips);
     }
-
-    const handler = () => {
-        menu.removeEventListener("transitionend", handler);
-        menu.remove();
-    };
-
-    const startButton = Button("OK, LET'S START!", () => {
-        menu.classList.add("closed");
-        menu.addEventListener("transitionend", handler);
-    });
-    startButton.id = "start-button";
-
-    menuButtonWrapper.appendChild(startButton);
-    menuContentWrapper.append(introduction, tips);
-
-    return menu;
 };

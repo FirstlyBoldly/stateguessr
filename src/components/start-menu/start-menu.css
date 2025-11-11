@@ -1,4 +1,4 @@
-.tips ul {
+#start-menu-player-tips ul {
     margin: var(--gap-normal) 0;
     padding-left: var(--gap-xlarge);
 }

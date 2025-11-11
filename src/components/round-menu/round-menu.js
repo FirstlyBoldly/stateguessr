@@ -1,19 +1,20 @@
 import "./round-menu.css";
-import { Menu } from "../menu";
+import { MenuPrototype } from "../menu";
 
-export const RoundMenu = (state, imageSource) => {
-    const [menu, menuContentWrapper, menuButtonWrapper] = Menu();
-    menu.id = "round-menu";
+export class RoundMenu extends MenuPrototype {
+    constructor(state, imageSource, initialState = "closed") {
+        super(initialState);
 
-    const text = document.createElement("p");
-    text.id = "round-menu-text";
-    text.innerText = `Draw the state of ${state}!`;
+        this.menu.id = "round-menu";
 
-    const img = document.createElement("img");
-    img.id = "round-menu-img";
-    img.src = imageSource;
+        const text = document.createElement("p");
+        text.id = "round-menu-text";
+        text.innerText = `Draw the state of ${state}!`;
 
-    menuContentWrapper.append(text, img);
+        const img = document.createElement("img");
+        img.id = "round-menu-img";
+        img.src = imageSource;
 
-    return menu;
+        this.contentWrapper.append(text, img);
+    }
 };

@@ -45,6 +45,8 @@ export const resetFreehand = () => {
         freehandIsTransitioning = false;
     });
 
+    const copy = getCopyURL(front);
+
     clearCanvas(
         front.getContext("2d"),
         front.width,
@@ -53,7 +55,7 @@ export const resetFreehand = () => {
     front.classList.add("dropped");
     rippingPaperSoundEffect.play();
 
-    return getCopyURL(front);
+    return copy;
 }
 
 const resetFreehandButton = () => {

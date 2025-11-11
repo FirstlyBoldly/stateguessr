@@ -1,4 +1,10 @@
+#round-menu {
+    transform: translateX(-100%);
+}
+
 #round-menu-img {
-    width: 50%;
-    height: auto;
+    width: 224px;
+    height: 224px;
+    object-fit: contain;
+    background-color: rgb(255, 255, 255);
 }

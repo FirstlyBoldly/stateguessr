@@ -1,75 +1,51 @@
 import "./end-menu.css";
-import { Menu } from "../menu";
 import { Button } from "../button";
+import { MenuPrototype } from "../menu";
 
-export const insertPlayerGallery = (playerImages) => {
-    const gallery = document.createElement("div");
-    gallery.id = "end-menu-player-gallery";
+export class EndMenu extends MenuPrototype {
+    constructor(initialState = "closed") {
+        super(initialState);
 
-    console.log(playerImages);
-    for (const [state, imageSource] of Object.entries(playerImages)) {
-        const wrapper = document.createElement("div");
-        wrapper.classList.add("end-menu-gallery-wrapper");
+        this.menu.id = "end-menu";
+        this.contentWrapper.id = "end-menu-content-wrapper";
 
-        const title = document.createElement("h3");
-        title.innerText = state;
+        const text = document.createElement("div");
+        text.innerText = "Player Gallery";
 
-        const img = document.createElement("img");
-        img.src = imageSource;
+        this.playerGallery = document.createElement("div");
+        this.playerGallery.id = "end-menu-player-gallery";
 
-        wrapper.append(title, img);
+        this.contentWrapper.append(text);
 
-        gallery.appendChild(wrapper);
+        this.retryButton = Button("retry", () => {
+            this.close();
+        });
+        this.retryButton.id = "end-menu-retry-button";
+
+        this.closeButton.innerHTML = "sandbox";
+        this.closeButton.id = "end-menu-sandbox-button";
+
+        this.buttonWrapper.appendChild(this.retryButton);
+        this.buttonWrapper.id = "end-menu-button-wrapper";
     }
 
-    const endMenuContentWrapper = document.getElementById("end-menu-content-wrapper");
-    endMenuContentWrapper.appendChild(gallery);
-};
+    pushPlayerGallery(...playerImages) {
+        for (const [state, imageSource] of playerImages) {
+            const wrapper = document.createElement("div");
+            wrapper.classList.add("end-menu-player-gallery-item");
 
-export const EndMenu = () => {
-    const [menu, menuContentWrapper, menuButtonWrapper] = Menu();
-    menu.id = "end-menu";
-    menuContentWrapper.id = "end-menu-content-wrapper";
+            const title = document.createElement("h2");
+            title.innerText = state;
 
-    const text = document.createElement("div");
-    text.innerText = "bleh...";
+            const img = document.createElement("img");
+            img.src = imageSource;
 
-    menuContentWrapper.append(text);
-
-    const sandboxHandler = () => {
-        menu.removeEventListener("transitionend", sandboxHandler);
-        menu.remove();
+            wrapper.append(title, img);
+            this.gallery.appendChild(wrapper);
+        }
     };
 
-    const startAgainHandler = () => {
-        menu.removeEventListener("transitionend", startAgainHandler);
-        menu.style.pointerEvents = "none";
-        menu.classList.remove("closed");
-        menu.style.display = "none";
-    };
-
-    const onChange = (handler) => {
-        menu.classList.remove("opened");
-        menu.classList.add("closed");
-        menu.addEventListener("transitionend", handler);
-    };
-
-    const startAgainOnChange = () => {
-        onChange(startAgainHandler);
+    emptyPlayerGallery() {
+        this.gallery.innerHTML = "";
     }
-
-    const sandboxOnChange = () => {
-        onChange(sandboxHandler);
-    }
-
-    const startAgainButton = Button("Start Again", startAgainOnChange);
-    startAgainButton.id = "start-again-button";
-
-    const sandboxModeButton = Button("Sandbox Mode", sandboxOnChange);
-    sandboxModeButton.id = "sandbox-mode-button";
-
-    menuButtonWrapper.id = "end-menu-button-wrapper";
-    menuButtonWrapper.append(startAgainButton, sandboxModeButton);
-
-    return menu;
 };

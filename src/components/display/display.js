@@ -172,6 +172,7 @@ export class Display {
             }
         }
 
+        text = text.toUpperCase();
         if (this.text !== text) {
             this.text = text;
             if (this.options.playSound) {

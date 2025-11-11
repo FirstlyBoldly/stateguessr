@@ -1,12 +1,13 @@
 .button-class {
     border: none;
     background: none;
+    text-transform: uppercase;
     font-size: 2rem;
     font-weight: bold;
     color: var(--primary-color);
     background-color: var(--secondary-color);
     box-shadow: var(--gap-normal) var(--gap-normal) var(--primary-color);
-    transition: transform 0.2s ease-out;
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
 }
 
 .button-class:hover {
@@ -18,7 +19,7 @@
     transform: translate(8px, 8px);
 }
 
-.button-is-pressed {
+.button-clicked {
     box-shadow: none;
     transform: translate(8px, 8px);
 }

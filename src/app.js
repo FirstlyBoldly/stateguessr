@@ -1,172 +1,168 @@
 import "./global.css";
+import { EndMenu } from "./components/end-menu";
+import { RoundMenu } from "./components/round-menu";
 import { StartMenu } from "./components/start-menu";
-import { EndMenu, insertPlayerGallery } from "./components/end-menu/end-menu";
-import { DisplayContainer } from "./components/display-container";
+import { ImageShow } from "./components/image-show";
 import { Board, resetFreehand } from "./components/board";
-import { ImageShow } from "./components/image-show/image-show";
-import { RoundMenu } from "./components/round-menu/round-menu";
+import { DisplayContainer } from "./components/display-container";
+import { getUniqueValueFromObject, loadStates } from "./helpers";
 
 const app = document.getElementById("app");
-if (app) {
-    const [, sign, indicator] = DisplayContainer(app);
 
-    const startMenu = StartMenu();
-    app.append(startMenu);
+// Need direct manipulation of the instances.
+const [, sign, indicator] = DisplayContainer(app);
 
-    const startButton = document.getElementById("start-button");
-    startButton.addEventListener("click", () => {
-        startButton.disabled = true;
+const startMenu = new StartMenu();
+app.append(startMenu.menu);
 
-        const board = Board();
-        const endMenu = EndMenu();
-        const [imageShow, img, imageShowCloseButton] = ImageShow();
+startMenu.closeButton.addEventListener("click", () => {
+    // Get rid of the start menu.
+    startMenu.closeButton.disabled = true;
+    startMenu.close(() => {
+        startMenu.remove();
+    });
 
-        app.append(board, imageShow, endMenu);
+    const board = Board();
+    app.appendChild(board);
 
-        const roundDurationInSeconds = 3;
-        const maxRounds = 1;
-        let roundNumber = 1;
-        let roundTimeout = null;
-        let roundInterval = null;
+    const endMenu = new EndMenu();
+    app.appendChild(endMenu.menu);
 
-        let playerImages = {};
-        let state = null;
+    const [imageShow, imageShowDisplayImage, imageShowCloseButton] = ImageShow();
+    app.appendChild(imageShow);
 
-        let roundImages = [];
-        const states = import.meta.glob("/src/assets/states/*.jpg");
+    // Variables of the game loop.
+    const MAX_ROUNDS = 2;
+    const ROUND_DURATION_IN_SECONDS = 3;
+    const INTERMISSION_DURATION_IN_SECONDS = 2;
+    const ROUND_STARTING_NUMBER = 0;
 
-        const choice = () => {
-            const keys = Object.keys(states)
-            const size = keys.length;
-            if (size === 0) {
-                return null;
-            }
+    let roundNumber = ROUND_STARTING_NUMBER;
+    let roundTimeout = null;
+    let roundInterval = null;
 
-            const i = Math.trunc(Math.random() * size);
-            return keys[i];
-        };
+    // This will collect the final player drawing at end of each round.
+    let playerImages = {};
 
-        const getUniqueGameState = () => {
-            const imgPath = choice();
-            while (true) {
-                if (imgPath in Object.keys(roundImages)) {
-                    imgPath = choice();
-                } else {
-                    roundImages.push(imgPath);
-                    return imgPath;
-                }
-            }
-        };
+    // This will contain all states played in the game session.
+    // Mainly to prevent overlap of states.
+    let usedStates = [];
 
-        const endGame = () => {
-            playerImages[state] = resetFreehand();
+    const states = loadStates();
+    let state = null;
 
-            sign.write("TIME IS UP");
-            indicator.write("!");
+    const endGame = () => {
+        clearInterval(roundInterval);
+        clearTimeout(roundTimeout);
 
-            sign.lock();
-            indicator.lock();
+        // Make sure the board is not interactable until another round/game starts.
+        board.style.pointerEvents = "none";
 
-            clearInterval(roundInterval);
-            clearTimeout(roundTimeout);
+        usedStates = [];
 
-            board.style.pointerEvents = "none";
+        // Insert all the round images onto the end menu.
+        playerImages[state] = resetFreehand();
+        endMenu.pushPlayerGallery(Object.entries(playerImages));
+        playerImages = {};
 
-            insertPlayerGallery(playerImages);
+        sign.write("time-is-up");
+        indicator.write("!");
+        sign.lock();
+        indicator.lock();
 
-            endMenu.style.pointerEvents = "auto";
-            endMenu.classList.add("opened");
-            endMenu.style.display = "inline";
+        endMenu.open();
+    };
 
-            roundImages = [];
-        };
+    const endRound = () => {
+        board.style.pointerEvents = "none";
 
-        const endRound = () => {
-            imageShowCloseButton.click();
+        imageShowCloseButton.click();
+        playerImages[state] = resetFreehand();
 
-            sign.lock();
-            indicator.lock();
+        sign.unlock();
+        indicator.unlock();
+        sign.reset();
+        indicator.write("-");
+        sign.lock();
+        indicator.lock();
 
-            board.style.pointerEvents = "none";
+        round();
+    };
 
-            playerImages[state] = resetFreehand();
+    const round = () => {
+        ++roundNumber;
+        if (roundNumber > MAX_ROUNDS) {
+            endGame();
+            return;
+        }
 
-            round();
-        };
+        sign.unlock();
+        indicator.unlock();
+        sign.write(`round:${roundNumber}`);
+        indicator.write("-");
+        sign.lock();
+        indicator.lock();
 
-        const round = () => {
-            sign.unlock();
-            indicator.unlock();
-            sign.write(`ROUND:${roundNumber}`);
-            indicator.write("-");
-            sign.lock();
-            indicator.lock();
+        state = getUniqueValueFromObject(states, usedStates);
+        usedStates.push(state);
 
-            state = getUniqueGameState();
-            states[state]().then(module => {
-                img.src = module.default;
-                const roundMenu = RoundMenu(state, module.default);
-                app.append(roundMenu);
-                roundMenu.classList.add("opened");
+        states[state]().then(module => {
+            imageShowDisplayImage.src = module.default;
+            const roundMenu = new RoundMenu(state, module.default);
 
-                setTimeout(() => {
-                    roundMenu.classList.remove("opened");
-                    roundMenu.classList.add("closed");
-                    roundMenu.addEventListener("transitionend", () => {
-                        roundMenu.remove();
-                    });
+            app.append(roundMenu.menu);
+            roundMenu.open();
 
-                    sign.unlock();
-                    indicator.unlock();
-                    sign.write("STATEGUESSR");
-                    indicator.write("!");
+            setTimeout(() => {
+                roundMenu.close(roundMenu.remove);
+                board.style.pointerEvents = "auto";
 
-                    board.style.pointerEvents = "auto";
-                    let remainingSeconds = roundDurationInSeconds;
+                sign.unlock();
+                indicator.unlock();
+                sign.write("stateguessr");
+                indicator.write("!");
 
-                    roundInterval = setInterval(() => {
-                        remainingSeconds--;
-                        if (remainingSeconds === 0) {
-                            roundNumber++;
-                            clearInterval(roundInterval);
-                            if (roundNumber > maxRounds) {
-                                endGame();
-                                return;
-                            } else {
-                                endRound();
-                            }
-                        }
-                    }, 1000);
-                }, 2000);
-            });
-        };
+                let remainingSeconds = ROUND_DURATION_IN_SECONDS;
+                roundInterval = setInterval(() => {
+                    --remainingSeconds;
+                    if (remainingSeconds === 0) {
+                        clearInterval(roundInterval);
+                        endRound();
+                    }
+                }, 1000);
+            }, INTERMISSION_DURATION_IN_SECONDS * 1000);
+        });
+    };
 
-        document.getElementById("start-again-button").addEventListener("click", () => {
-            board.style.pointerEvents = "auto";
-            roundNumber = 1;
+    endMenu.retryButton.addEventListener("click", () => {
+        roundNumber = ROUND_STARTING_NUMBER;
+        board.style.pointerEvents = "auto";
 
-            sign.unlock();
-            indicator.unlock();
-
-            round();
+        endMenu.close(() => {
+            endMenu.emptyPlayerGallery();
         });
 
-        document.getElementById("sandbox-mode-button").addEventListener("click", () => {
-            const goalDisplayButton = document.getElementById("goal-display-button");
-            goalDisplayButton.style.pointerEvents = "none";
-            goalDisplayButton.style.display = "none";
-
-            board.style.pointerEvents = "auto";
-
-            sign.unlock();
-            indicator.unlock();
-
-            sign.write("SANDBOX MODE");
-            indicator.write("-");
-        });
+        sign.unlock();
+        indicator.unlock();
+        sign.write("stateguessr");
+        indicator.write("!");
 
         round();
     });
-} else {
-    console.error("No element to append onto.");
-}
+
+    endMenu.closeButton.addEventListener("click", () => {
+        document.getElementById("goal-display-button").remove();
+        board.style.pointerEvents = "auto";
+
+        endMenu.close(() => {
+            endMenu.remove();
+        });
+
+        sign.unlock();
+        indicator.unlock();
+        sign.write("sandbox");
+        indicator.write("-");
+    });
+
+    round();
+});

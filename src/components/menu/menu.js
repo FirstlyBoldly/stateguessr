@@ -1,40 +1,101 @@
 import "./menu.css";
+import { Button } from "../button";
 
-export const Menu = () => {
-    const menu = document.createElement("div");
-    menu.classList.add("menu");
+export class MenuPrototype {
+    constructor(initialState = "opened") {
+        this.menu = document.createElement("div");
+        this.menu.classList.add("menu");
 
-    const menuWrapper = document.createElement("div");
-    menuWrapper.classList.add("menu-wrapper");
+        this.menuWrapper = document.createElement("div");
+        this.menuWrapper.classList.add("menu-wrapper");
 
-    const contentWrapper = document.createElement("div");
-    contentWrapper.classList.add("menu-content-wrapper");
+        this.contentWrapper = document.createElement("div");
+        this.contentWrapper.classList.add("menu-content-wrapper");
 
-    const buttonWrapper = document.createElement("div");
-    buttonWrapper.classList.add("menu-button-wrapper");
+        this.buttonWrapper = document.createElement("div");
+        this.buttonWrapper.classList.add("menu-button-wrapper");
 
-    menuWrapper.append(contentWrapper, buttonWrapper);
-    menu.appendChild(menuWrapper);
+        this.closeButton = Button("x", this.close);
+        this.closeButton.classList.add("menu-close-button");
+        this.buttonWrapper.appendChild(this.closeButton);
 
-    const displayContainer = document.getElementById("display-container");
-    const footer = document.getElementsByTagName("footer")[0];
-    const displayContainerStyleBottom = () => {
-        const style = window.getComputedStyle(displayContainer);
-        return displayContainer.getBoundingClientRect().bottom + window.scrollY + parseFloat(style.marginBottom);
-    };
+        this.menuWrapper.append(this.contentWrapper, this.buttonWrapper);
+        this.menu.appendChild(this.menuWrapper);
 
-    const wrapper = document.getElementById("wrapper");
-    const footerStyleTop = () => {
-        const style = window.getComputedStyle(wrapper);
-        return footer.getBoundingClientRect().top + window.scrollY - parseFloat(style.margin);
-    };
+        window.addEventListener("resize", this.resize);
 
-    menu.style.top = `${displayContainerStyleBottom()}px`;
-    menu.style.height = `${footerStyleTop() - displayContainerStyleBottom()}px`;
-    window.addEventListener("resize", () => {
-        menu.style.top = `${displayContainerStyleBottom()}px`;
-        menu.style.height = `${footerStyleTop() - displayContainerStyleBottom()}px`;
-    });
+        switch (initialState) {
+            case "opened":
+                this.menu.style.transform = "translateX(0%)";
+                break;
 
-    return [menu, contentWrapper, buttonWrapper];
+            case "closed":
+                this.menu.style.transform = "translateX(-100%)";
+                break;
+
+            default:
+                this.menu.style.transform = "translateX(0%)";
+                break;
+        }
+
+        this.resize();
+    }
+
+    resize() {
+        const displayContainer = document.getElementById("display-container");
+        const footer = document.getElementById("app-footer");
+        const displayContainerStyleBottom = () => {
+            const style = window.getComputedStyle(displayContainer);
+            return displayContainer.getBoundingClientRect().bottom + window.scrollY + parseFloat(style.marginBottom);
+        };
+
+        const wrapper = document.getElementById("wrapper");
+        const footerStyleTop = () => {
+            const style = window.getComputedStyle(wrapper);
+            return footer.getBoundingClientRect().top + window.scrollY - parseFloat(style.margin);
+        };
+
+        this.menu.style.top = `${displayContainerStyleBottom()}px`;
+        this.menu.style.height = `${footerStyleTop() - displayContainerStyleBottom()}px`;
+    }
+
+    open(onOpen) {
+        this.menu.style.display = "inline";
+        this.menu.style.transform = "translateX(0%)";
+
+        function handler() {
+            this.menu.removeEventListener("transitionend", handler);
+            this.menu.style.pointerEvents = "auto";
+
+            if (onOpen) {
+                onOpen();
+            }
+        }
+
+        this.menu.addEventListener("transitionend", handler);
+
+        setTimeout(() => {
+            handler();
+        }, 1000);
+    }
+
+    close(onClose = null) {
+        this.menu.style.pointerEvents = "none";
+        this.menu.style.transform = "translateX(-100%)";
+
+        function handler() {
+            this.menu.removeEventListener("transitionend", handler);
+            this.menu.style.display = "none";
+
+            if (onClose) {
+                onClose();
+            }
+        }
+
+        this.menu.addEventListener("transitionend", handler);
+
+        setTimeout(() => {
+            handler();
+        }, 1000);
+    }
 }
