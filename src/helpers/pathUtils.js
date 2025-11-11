@@ -11,7 +11,7 @@ export const getFilename = (path) => {
 export const loadStates = () => {
     const states = import.meta.glob("/src/assets/states/*.jpg");
     for (const oldKey of Object.keys(states)) {
-        const newKey = getFilename(oldKey);
+        const newKey = getFilename(oldKey).toLowerCase();
         delete Object.assign(states, { [newKey]: states[oldKey] })[oldKey];
     }
 

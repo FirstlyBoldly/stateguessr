@@ -1,7 +1,5 @@
 import "./display-container.css";
 import { Display } from "../display";
-import { canvasEvents } from "../freehand";
-import { predictState } from "../../services/tfjs";
 
 export const DisplayContainer = (app) => {
     const container = document.createElement("div");
@@ -36,20 +34,6 @@ export const DisplayContainer = (app) => {
 
     window.addEventListener("resize", () => {
         resizeSign();
-    });
-
-    window.addEventListener(canvasEvents.canvasUpdated, () => {
-        const canvas = document.getElementById("front-canvas");
-        const prediction = predictState(canvas).toUpperCase();
-        if (prediction) {
-            sign.write(prediction);
-            indicator.write("?");
-        }
-    });
-
-    window.addEventListener(canvasEvents.canvasCleared, () => {
-        sign.reset();
-        indicator.write("-");
     });
 
     resizeSign();

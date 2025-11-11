@@ -1,8 +1,10 @@
 import "./global.css";
+import { predictState } from "./services/tfjs";
 import { EndMenu } from "./components/end-menu";
 import { RoundMenu } from "./components/round-menu";
 import { StartMenu } from "./components/start-menu";
 import { ImageShow } from "./components/image-show";
+import { canvasEvents } from "./components/freehand";
 import { Board, resetFreehand } from "./components/board";
 import { DisplayContainer } from "./components/display-container";
 import { getUniqueValueFromObject, loadStates } from "./helpers";
@@ -58,8 +60,6 @@ startMenu.closeButton.addEventListener("click", () => {
         // Make sure the board is not interactable until another round/game starts.
         board.style.pointerEvents = "none";
 
-        usedStates = [];
-
         // Insert all the round images onto the end menu.
         endMenu.pushPlayerGallery(...Object.entries(playerImages));
         playerImages = {};
@@ -107,8 +107,7 @@ startMenu.closeButton.addEventListener("click", () => {
         sign.lock();
         indicator.lock();
 
-        state = getUniqueValueFromObject(states, usedStates);
-        usedStates.push(state);
+        state = getUniqueValueFromObject(states, Object.keys(playerImages));
 
         states[state]().then(module => {
             imageShowDisplayImage.src = module.default;
@@ -139,6 +138,26 @@ startMenu.closeButton.addEventListener("click", () => {
             }, INTERMISSION_DURATION_IN_SECONDS * 1000);
         });
     };
+
+    window.addEventListener(canvasEvents.canvasUpdated, () => {
+        const canvas = document.getElementById("front-canvas");
+        const prediction = predictState(canvas);
+        if (prediction) {
+            sign.write(prediction);
+            indicator.write("?");
+
+            console.log(prediction, state);
+            if (prediction === state) {
+                alert("You got it!");
+                endRound();
+            }
+        }
+    });
+
+    window.addEventListener(canvasEvents.canvasCleared, () => {
+        sign.reset();
+        indicator.write("-");
+    });
 
     endMenu.retryButton.addEventListener("click", () => {
         roundNumber = ROUND_STARTING_NUMBER;

@@ -5,17 +5,17 @@ export const choice = (object) => {
         return null;
     }
 
-    const i = Math.trunc(Math.random() * size);
+    const i = Math.trunc(Math.random() * (size - 1));
     return keys[i];
 };
 
 export const getUniqueValueFromObject = (object, uniqueValues) => {
-    const imgPath = choice(object);
+    const value = choice(object);
     while (true) {
-        if (imgPath in uniqueValues) {
-            imgPath = choice();
+        if (uniqueValues.includes(value)) {
+            value = choice();
         } else {
-            return imgPath;
+            return value;
         }
     }
 };

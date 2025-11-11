@@ -63,9 +63,7 @@ const handleDown = (e, freehand) => {
     inputs = [getCoordsFromEvent(e, freehand)];
     clearInterval(timeout);
     timeout = setInterval(() => {
-        if (roundEnded) {
-            window.dispatchEvent(canvasUpdated());
-        }
+        window.dispatchEvent(canvasUpdated());
     }, 3000);
 };
 
