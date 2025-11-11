@@ -6,11 +6,12 @@ export const Button = (text, onChange) => {
     button.innerText = text;
 
     let timeout = null;
-    button.addEventListener("click", onChange);
     button.addEventListener("click", () => {
         if (timeout) {
             return;
         }
+
+        onChange();
 
         timeout = setTimeout(() => {
             clearTimeout(timeout);

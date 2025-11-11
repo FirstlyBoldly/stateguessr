@@ -1,4 +1,5 @@
 #round-menu {
+    z-index: 9999;
     transform: translateX(-100%);
 }
 

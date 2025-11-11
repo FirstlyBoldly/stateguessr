@@ -8,6 +8,14 @@
     gap: var(--gap-large);
 }
 
+#end-menu-sandbox-button {
+    background-color: brown;
+}
+
+#end-menu-retry-button {
+    background-color: rgb(0, 128, 0);
+}
+
 #end-menu-player-gallery {
     display: flex;
     flex-wrap: wrap;

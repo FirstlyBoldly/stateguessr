@@ -10,12 +10,14 @@ export class EndMenu extends MenuPrototype {
         this.contentWrapper.id = "end-menu-content-wrapper";
 
         const text = document.createElement("div");
-        text.innerText = "Player Gallery";
+        text.innerHTML = `
+            <h1>Player Gallery</h1>
+        `;
 
-        this.playerGallery = document.createElement("div");
-        this.playerGallery.id = "end-menu-player-gallery";
+        this.gallery = document.createElement("div");
+        this.gallery.id = "end-menu-player-gallery";
 
-        this.contentWrapper.append(text);
+        this.contentWrapper.append(text, this.gallery);
 
         this.retryButton = Button("retry", () => {
             this.close();

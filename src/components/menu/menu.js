@@ -15,14 +15,18 @@ export class MenuPrototype {
         this.buttonWrapper = document.createElement("div");
         this.buttonWrapper.classList.add("menu-button-wrapper");
 
-        this.closeButton = Button("x", this.close);
+        this.closeButton = Button("x", () => {
+            this.close()
+        });
         this.closeButton.classList.add("menu-close-button");
         this.buttonWrapper.appendChild(this.closeButton);
 
         this.menuWrapper.append(this.contentWrapper, this.buttonWrapper);
         this.menu.appendChild(this.menuWrapper);
 
-        window.addEventListener("resize", this.resize);
+        window.addEventListener("resize", () => {
+            this.resize();
+        });
 
         switch (initialState) {
             case "opened":
@@ -41,7 +45,7 @@ export class MenuPrototype {
         this.resize();
     }
 
-    resize() {
+    resize = () => {
         const displayContainer = document.getElementById("display-container");
         const footer = document.getElementById("app-footer");
         const displayContainerStyleBottom = () => {
@@ -59,40 +63,48 @@ export class MenuPrototype {
         this.menu.style.height = `${footerStyleTop() - displayContainerStyleBottom()}px`;
     }
 
-    open(onOpen) {
-        this.menu.style.display = "inline";
-        this.menu.style.transform = "translateX(0%)";
+    open = (onOpen) => {
+        setTimeout(() => {
+            this.menu.style.display = "inline";
+            this.menu.style.transform = "translateX(0%)";
+        }, 100);
 
-        function handler() {
-            this.menu.removeEventListener("transitionend", handler);
-            this.menu.style.pointerEvents = "auto";
+        const handler = () => {
+            setTimeout(() => {
+                // this.menu.removeEventListener("transitionend", handler);
+                this.menu.style.pointerEvents = "auto";
+            }, 100);
 
             if (onOpen) {
                 onOpen();
             }
         }
 
-        this.menu.addEventListener("transitionend", handler);
+        // this.menu.addEventListener("transitionend", handler);
 
         setTimeout(() => {
             handler();
         }, 1000);
     }
 
-    close(onClose = null) {
-        this.menu.style.pointerEvents = "none";
-        this.menu.style.transform = "translateX(-100%)";
+    close = (onClose = null) => {
+        setTimeout(() => {
+            this.menu.style.pointerEvents = "none";
+            this.menu.style.transform = "translateX(-100%)";
+        }, 100);
 
-        function handler() {
-            this.menu.removeEventListener("transitionend", handler);
-            this.menu.style.display = "none";
+        const handler = () => {
+            setTimeout(() => {
+                // this.menu.removeEventListener("transitionend", handler);
+                this.menu.style.display = "none";
+            }, 100);
 
             if (onClose) {
                 onClose();
             }
         }
 
-        this.menu.addEventListener("transitionend", handler);
+        // this.menu.addEventListener("transitionend", handler);
 
         setTimeout(() => {
             handler();

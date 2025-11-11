@@ -29,7 +29,10 @@ export const calcFreehandSize = () => {
 };
 
 export const resetFreehand = () => {
-    if (freehandIsTransitioning) return;
+    if (freehandIsTransitioning) {
+        return;
+    }
+
     freehandIsTransitioning = true;
 
     let front = document.getElementById("front-canvas");

@@ -19,7 +19,7 @@ startMenu.closeButton.addEventListener("click", () => {
     // Get rid of the start menu.
     startMenu.closeButton.disabled = true;
     startMenu.close(() => {
-        startMenu.remove();
+        startMenu.menu.remove();
     });
 
     const board = Board();
@@ -61,10 +61,11 @@ startMenu.closeButton.addEventListener("click", () => {
         usedStates = [];
 
         // Insert all the round images onto the end menu.
-        playerImages[state] = resetFreehand();
-        endMenu.pushPlayerGallery(Object.entries(playerImages));
+        endMenu.pushPlayerGallery(...Object.entries(playerImages));
         playerImages = {};
 
+        sign.unlock();
+        indicator.unlock();
         sign.write("time-is-up");
         indicator.write("!");
         sign.lock();
@@ -74,9 +75,8 @@ startMenu.closeButton.addEventListener("click", () => {
     };
 
     const endRound = () => {
-        board.style.pointerEvents = "none";
-
         imageShowCloseButton.click();
+        board.style.pointerEvents = "none";
         playerImages[state] = resetFreehand();
 
         sign.unlock();
@@ -114,7 +114,9 @@ startMenu.closeButton.addEventListener("click", () => {
             roundMenu.open();
 
             setTimeout(() => {
-                roundMenu.close(roundMenu.remove);
+                roundMenu.close(() => {
+                    roundMenu.menu.remove();
+                });
                 board.style.pointerEvents = "auto";
 
                 sign.unlock();
@@ -154,9 +156,7 @@ startMenu.closeButton.addEventListener("click", () => {
         document.getElementById("goal-display-button").remove();
         board.style.pointerEvents = "auto";
 
-        endMenu.close(() => {
-            endMenu.remove();
-        });
+        endMenu.close();
 
         sign.unlock();
         indicator.unlock();
