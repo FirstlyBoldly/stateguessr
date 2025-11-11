@@ -66,8 +66,12 @@ startMenu.closeButton.addEventListener("click", () => {
 
         sign.unlock();
         indicator.unlock();
-        sign.write("time-is-up");
-        indicator.write("!");
+        sign.write("time-is-up", {
+            onColor: "#BC0000",
+        });
+        indicator.write("!", {
+            onColor: "#BC0000",
+        });
         sign.lock();
         indicator.lock();
 

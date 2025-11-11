@@ -2,10 +2,14 @@
     transform: translateX(-100%);
 }
 
+#end-menu-content-wrapper {
+    text-align: center;
+}
+
 #end-menu-button-wrapper {
     display: flex;
     flex-direction: row;
-    gap: var(--gap-large);
+    gap: var(--gap-xlarge);
 }
 
 #end-menu-sandbox-button {
@@ -20,6 +24,8 @@
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
+    gap: var(--gap-xlarge);
+    text-align: left;
 }
 
 .end-menu-player-gallery-item img {

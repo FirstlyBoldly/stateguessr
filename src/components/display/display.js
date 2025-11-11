@@ -26,6 +26,8 @@ export class Display {
             scrollIntervalDelay: options.scrollIntervalDelay ?? 1000,
         };
 
+        this.optionsBackup = structuredClone(this.options);
+
         this.locked = false;
 
         this.scrollTimeout = null;
@@ -156,6 +158,13 @@ export class Display {
         }, this.options.scrollIntervalDelay);
     }
 
+    /**
+     * `options` argument is for this instance only. \
+     * The class options will take precedence on any proceeding calls.
+     * @param {*} text
+     * @param {*} options
+     * @returns
+     */
     write(text, options = {}) {
         if (this.locked) {
             return;
@@ -166,6 +175,7 @@ export class Display {
             return;
         }
 
+        Object.assign(this.options, this.optionsBackup);
         if (options) {
             for (const [key, value] of Object.entries(options)) {
                 this.options[key] = value;

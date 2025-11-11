@@ -9,16 +9,19 @@
 }
 
 .menu-wrapper {
-    color: var(--primary-color);
     margin: var(--gap-xlarge);
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: var(--gap-xlarge);
+    color: var(--primary-color);
 }
 
 .menu-content-wrapper {
     max-width: 1400px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-xlarge);
 }
 
 .menu .button-class {
