@@ -3,9 +3,22 @@
     transform: translateX(-100%);
 }
 
+#round-menu-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--gap-xlarge);
+    text-align: center;
+}
+
 #round-menu-img {
     width: 224px;
     height: 224px;
     object-fit: contain;
     background-color: rgb(255, 255, 255);
+    box-shadow: var(--gap-small) var(--gap-small) var(--gap-small) var(--primary-color);
+}
+
+#round-menu-close-button {
+    background-color: brown;
 }

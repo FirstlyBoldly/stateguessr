@@ -24,8 +24,14 @@
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
+    justify-content: center;
     gap: var(--gap-xlarge);
-    text-align: left;
+}
+
+.end-menu-player-gallery-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-normal);
 }
 
 .end-menu-player-gallery-item img {

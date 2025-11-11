@@ -6,8 +6,13 @@ export class RoundMenu extends MenuPrototype {
         super(initialState);
 
         this.menu.id = "round-menu";
+        this.contentWrapper.id = "round-menu-content-wrapper";
+        this.buttonWrapper.id = "round-menu-button-wrapper";
 
-        const text = document.createElement("p");
+        this.closeButton.innerText = "draw";
+        this.closeButton.id = "round-menu-close-button";
+
+        const text = document.createElement("h2");
         text.id = "round-menu-text";
         text.innerText = `Draw the state of ${state}!`;
 
