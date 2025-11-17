@@ -1,16 +1,15 @@
 import "./freehand.css";
 import { getStroke } from "perfect-freehand";
+import { getSvgPathFromStroke } from "../../helpers";
 
-const fillStyle = "black";
 const options = {
-    size: 1,
+    size: 5,
     thinning: 0.5,
     smoothing: 0.5,
     streamline: 0.5,
 };
 let timeout = null;
 let isDrawing = false;
-let roundEnded = false;
 let inputs = [];
 
 export const canvasEvents = {
@@ -44,14 +43,10 @@ const getCoordsFromEvent = (e, freehand) => {
 }
 
 const drawStroke = (ctx, points) => {
-    ctx.beginPath();
-    ctx.moveTo(points[0][0], points[0][1]);
-    for (let i = 1; i < points.length; i++) {
-        ctx.lineTo(points[i][0], points[i][1]);
-    }
-
-    ctx.fillStyle = fillStyle;
-    ctx.stroke();
+    const pathData = getSvgPathFromStroke(points);
+    const path = new Path2D(pathData);
+    ctx.fillStyle = "#000000";
+    ctx.fill(path);
 };
 
 const handleDown = (e, freehand) => {

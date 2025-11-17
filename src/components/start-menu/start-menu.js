@@ -4,7 +4,7 @@ import { MenuPrototype } from "../menu";
 
 export class StartMenu extends MenuPrototype {
     // Courtesy of Aria Noorghorbani, accessed from https://stackoverflow.com/questions/77506413/detecting-if-the-user-is-on-desktop-or-mobile-in-the-browser.
-    static isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    // static isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
     constructor(initialState = "opened") {
         super(initialState);
@@ -20,17 +20,15 @@ export class StartMenu extends MenuPrototype {
         `;
 
         let tips = "";
-        if (!StartMenu.isMobile) {
-            tips = document.createElement("div");
-            tips.id = "start-menu-player-tips";
-            tips.innerHTML = `
-                <h1>Useful Commands</h1>
-                <ul>
-                    <li>Ctrl+q or [RESET-ICON]: Reset Canvas</li>
-                    <li>[FLAG-ICON]: See goal</li>
-                </ul>
-            `;
-        }
+        tips = document.createElement("div");
+        tips.id = "start-menu-player-tips";
+        tips.innerHTML = `
+            <h1>Useful Commands</h1>
+            <ul>
+                <li>Ctrl+q or [RESET-ICON]: Reset Canvas</li>
+                <li>[FLAG-ICON]: See goal</li>
+            </ul>
+        `;
 
         this.closeButton.innerText = "start";
         this.closeButton.id = "start-button";
