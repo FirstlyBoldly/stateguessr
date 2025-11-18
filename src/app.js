@@ -14,6 +14,15 @@ const app = document.getElementById("app");
 // Need direct manipulation of the instances.
 const [, sign, indicator] = DisplayContainer(app);
 
+const board = Board();
+app.appendChild(board);
+
+const endMenu = new EndMenu();
+app.appendChild(endMenu.menu);
+
+const [imageShow, imageShowDisplayImage, imageShowCloseButton] = ImageShow();
+app.appendChild(imageShow);
+
 const startMenu = new StartMenu();
 app.append(startMenu.menu);
 
@@ -23,15 +32,6 @@ startMenu.closeButton.addEventListener("click", () => {
     startMenu.close(() => {
         startMenu.menu.remove();
     });
-
-    const board = Board();
-    app.appendChild(board);
-
-    const endMenu = new EndMenu();
-    app.appendChild(endMenu.menu);
-
-    const [imageShow, imageShowDisplayImage, imageShowCloseButton] = ImageShow();
-    app.appendChild(imageShow);
 
     // Variables of the game loop.
     const MAX_ROUNDS = 5;

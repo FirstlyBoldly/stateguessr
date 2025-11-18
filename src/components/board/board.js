@@ -67,9 +67,9 @@ const resetFreehandButton = () => {
         resetFreehand
     );
     button.id = "reset-button";
-    const refreshLogo = document.getElementById("refresh-logo");
-    refreshLogo.setAttribute("width", "24px");
-    refreshLogo.setAttribute("height", "24px");
+    const refreshLogo = document.getElementById("refresh-logo").cloneNode(true);
+    refreshLogo.setAttribute("width", "32px");
+    refreshLogo.setAttribute("height", "32px");
     if (refreshLogo) {
         button.innerHTML = "";
         button.appendChild(refreshLogo);
@@ -87,7 +87,7 @@ const displayGoalButton = () => {
         }
     );
     button.id = "goal-display-button";
-    const targetFlagLogo = document.getElementById("target-flag-logo");
+    const targetFlagLogo = document.getElementById("target-flag-logo").cloneNode(true);
     targetFlagLogo.setAttribute("width", "24px");
     targetFlagLogo.setAttribute("height", "24px");
     if (targetFlagLogo) {

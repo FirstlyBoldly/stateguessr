@@ -1,8 +1,7 @@
 #board {
     position: relative;
     animation: pulse-glow 5s infinite alternate;
-    /* background-color: var(--tertiary-color); */
-    background-color: white;
+    background-color: var(--tertiary-color);
 }
 
 #board .freehand {
@@ -10,17 +9,16 @@
 }
 
 #reset-button, #goal-display-button {
-    margin: var(--gap-small);
-    position: absolute;
     z-index: 99;
+    width: 36px;
+    height: 36px;
+    position: absolute;
+    margin: var(--gap-small);
+    padding: 0;
 }
 
 #goal-display-button {
     right: var(--gap-normal);
-}
-
-#reset-button object, #goal-display-button object {
-    pointer-events: none;
 }
 
 #front-canvas {

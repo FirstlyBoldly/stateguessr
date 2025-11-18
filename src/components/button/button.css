@@ -6,6 +6,9 @@
     color: var(--primary-color);
     background-color: var(--secondary-color);
     box-shadow: var(--gap-normal) var(--gap-normal) var(--primary-color);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
 }
 

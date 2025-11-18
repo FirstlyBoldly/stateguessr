@@ -35,6 +35,10 @@ body {
     background: var(--primary-color);
 }
 
+object {
+    pointer-events: none;
+}
+
 #loading-loop {
     position: absolute;
 }

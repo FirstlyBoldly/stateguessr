@@ -5,7 +5,19 @@
     background-size: 800px 450px;
 }
 
+#start-menu .dummy-button {
+    width: 36px;
+    height: 36px;
+    margin-right: 4px;
+    padding: 0;
+    line-height: 36px;
+}
+
 #start-menu-player-tips ul {
     margin: var(--gap-normal) 0;
     padding-left: var(--gap-xlarge);
+}
+
+#start-menu-player-tips ul li {
+    margin-bottom: var(--gap-large);
 }
