@@ -9,12 +9,14 @@ export class StartMenu extends MenuPrototype {
     constructor(initialState = "opened") {
         super(initialState);
 
+        this.menu.id = "start-menu";
+
         const summary = document.createElement("div");
         summary.id = "start-menu-summary";
         summary.innerHTML = `
-            <h1>Welcome</h1>
+            <h1>Basically</h1>
             <p>
-                Draw a state of the <strong>United States of America</strong></br>
+                Draw a <strong>US state</strong></br>
                 and see if an AI model can guess it!
             </p>
         `;
