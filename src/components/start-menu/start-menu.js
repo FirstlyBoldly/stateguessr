@@ -16,8 +16,8 @@ export class StartMenu extends MenuPrototype {
         summary.innerHTML = `
             <h1>Basically</h1>
             <p>
-                Draw a <strong>US state</strong></br>
-                and see if an AI model can guess it!
+                Draw a <strong>US state</strong> and</br>
+                see if the model can guess it correctly!
             </p>
         `;
 

@@ -2,6 +2,10 @@
     transform: translateX(-100%);
 }
 
+#end-menu .menu-wrapper::before {
+    background-color: brown !important;
+}
+
 #end-menu-content-wrapper {
     text-align: center;
 }

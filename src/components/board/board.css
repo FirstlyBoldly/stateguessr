@@ -1,7 +1,8 @@
 #board {
     position: relative;
     animation: pulse-glow 5s infinite alternate;
-    background-color: var(--tertiary-color);
+    /* background-color: var(--tertiary-color); */
+    background-color: white;
 }
 
 #board .freehand {

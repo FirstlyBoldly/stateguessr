@@ -28,6 +28,7 @@
 }
 
 .menu-wrapper {
+    height: 100%;
     padding: var(--gap-xlarge);
     display: flex;
     flex-direction: column;
@@ -58,9 +59,23 @@
     gap: var(--gap-xlarge);
 }
 
+.menu-button-wrapper {
+    margin-bottom: var(--gap-xlarge);
+}
+
 .menu .button-class {
     line-height: 32px;
     padding: var(--gap-normal);
     color: var(--tertiary-color);
     background-color: var(--complementary-color);
+}
+
+@media screen and (max-width: 576px) {
+    .menu::before {
+        display: none;
+    }
+
+    .menu-wrapper::before {
+        display: none;
+    }
 }
