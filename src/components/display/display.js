@@ -18,6 +18,8 @@ export class Display {
             charHeightInDots: options.charHeight ?? 7,
             onColor: options.onColor ?? Display.defaultOnColor,
             offColor: options.offColor ?? Display.defaultOffColor,
+            shadowBlur: options.shadowBlur ?? 15,
+            shadowColor: options.shadowColor ?? "#FF4200",
             backgroundColor: options.backgroundColor ?? Display.defaultBackgroundColor,
             playSound: options.playSound ?? true,
             changeWithViewport: options.changeWithViewport ?? false,
@@ -87,8 +89,8 @@ export class Display {
     }
 
     drawDot(x, y) {
-        this.ctx.shadowBlur = this.options.shadowBlur || 15;
-        this.ctx.shadowColor = this.options.shadowColor || "#FF4200";
+        this.ctx.shadowBlur = this.options.shadowBlur;
+        this.ctx.shadowColor = this.options.shadowColor;
         this.ctx.fillStyle = this.options.fillStyle || this.options.onColor;
         this.ctx.fillRect(x, y, this.options.dotSize, this.options.dotSize);
     }

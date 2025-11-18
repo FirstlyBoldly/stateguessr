@@ -49,6 +49,8 @@ startMenu.closeButton.addEventListener("click", () => {
     const states = loadStates();
     let state = null;
 
+    let correctGuesses = 0;
+
     const endGame = () => {
         clearInterval(roundInterval);
         clearTimeout(roundTimeout);
@@ -62,7 +64,7 @@ startMenu.closeButton.addEventListener("click", () => {
 
         sign.unlock();
         indicator.unlock();
-        sign.write("time-is-up", {
+        sign.write("finish", {
             onColor: "#BC0000",
         });
         indicator.write("!", {
@@ -135,6 +137,7 @@ startMenu.closeButton.addEventListener("click", () => {
         });
     };
 
+    // We might need to do something about this nested mess...
     window.addEventListener(canvasEvents.canvasUpdated, () => {
         const canvas = document.getElementById("front-canvas");
         predictState(canvas).then(
@@ -145,8 +148,15 @@ startMenu.closeButton.addEventListener("click", () => {
 
                     console.log(prediction, state);
                     if (prediction === state) {
-                        alert("You got it!");
-                        endRound();
+                        sign.unlock();
+                        indicator.unlock();
+                        sign.write(prediction, { onColor: "#34b518", shadowColor: "#2b7705" });
+                        indicator.write("!", { onColor: "#34b518", shadowColor: "#2b7705" });
+                        sign.lock();
+                        indicator.lock();
+
+                        correctGuesses++;
+                        setTimeout(endRound, 2000);
                     }
                 }
             }
