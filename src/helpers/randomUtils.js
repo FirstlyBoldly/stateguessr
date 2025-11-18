@@ -10,10 +10,10 @@ export const choice = (object) => {
 };
 
 export const getUniqueValueFromObject = (object, uniqueValues) => {
-    const value = choice(object);
+    let value = choice(object);
     while (true) {
         if (uniqueValues.includes(value)) {
-            value = choice();
+            value = choice(object);
         } else {
             return value;
         }

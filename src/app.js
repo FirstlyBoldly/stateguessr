@@ -46,10 +46,6 @@ startMenu.closeButton.addEventListener("click", () => {
     // This will collect the final player drawing at end of each round.
     let playerImages = {};
 
-    // This will contain all states played in the game session.
-    // Mainly to prevent overlap of states.
-    let usedStates = [];
-
     const states = loadStates();
     let state = null;
 
@@ -141,17 +137,20 @@ startMenu.closeButton.addEventListener("click", () => {
 
     window.addEventListener(canvasEvents.canvasUpdated, () => {
         const canvas = document.getElementById("front-canvas");
-        const prediction = predictState(canvas);
-        if (prediction) {
-            sign.write(prediction);
-            indicator.write("?");
+        predictState(canvas).then(
+            (prediction) => {
+                if (prediction) {
+                    sign.write(prediction);
+                    indicator.write("?");
 
-            console.log(prediction, state);
-            if (prediction === state) {
-                alert("You got it!");
-                endRound();
+                    console.log(prediction, state);
+                    if (prediction === state) {
+                        alert("You got it!");
+                        endRound();
+                    }
+                }
             }
-        }
+        );
     });
 
     window.addEventListener(canvasEvents.canvasCleared, () => {

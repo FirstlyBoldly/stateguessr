@@ -14,10 +14,10 @@ export class StartMenu extends MenuPrototype {
         const summary = document.createElement("div");
         summary.id = "start-menu-summary";
         summary.innerHTML = `
-            <h1>Basically</h1>
+            <h1>Basically...</h1>
             <p>
                 Draw a <strong>US state</strong> and</br>
-                see if the model can guess it correctly!
+                see if the model can <strong>recognize</strong> it!
             </p>
         `;
 
@@ -32,8 +32,8 @@ export class StartMenu extends MenuPrototype {
             </ul>
         `;
 
-        const dummyButton1 = Button("");
-        dummyButton1.classList.add("dummy-button");
+        const dummyButton1 = Button();
+        dummyButton1.classList.add("dummy-button", "reset-button");
 
         const resetLogo = document.getElementById("refresh-logo").cloneNode(true);
         resetLogo.setAttribute("width", "36px");
@@ -41,7 +41,7 @@ export class StartMenu extends MenuPrototype {
 
         dummyButton1.appendChild(resetLogo);
 
-        const dummyButton2 = Button("");
+        const dummyButton2 = Button();
         dummyButton2.classList.add("dummy-button");
 
         const targetFlagLogo = document.getElementById("target-flag-logo").cloneNode(true);

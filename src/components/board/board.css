@@ -8,7 +8,7 @@
     position: absolute;
 }
 
-#reset-button, #goal-display-button {
+.reset-button, #goal-display-button {
     z-index: 99;
     width: 36px;
     height: 36px;

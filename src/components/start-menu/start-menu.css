@@ -6,9 +6,10 @@
 }
 
 #start-menu .dummy-button {
+    position: relative;
     width: 36px;
     height: 36px;
-    margin-right: 4px;
+    margin: 0 4px 0 0;
     padding: 0;
     line-height: 36px;
 }

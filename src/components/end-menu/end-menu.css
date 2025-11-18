@@ -16,12 +16,8 @@
     gap: var(--gap-xlarge);
 }
 
-#end-menu-sandbox-button {
-    background-color: brown;
-}
-
 #end-menu-retry-button {
-    background-color: rgb(0, 128, 0);
+    background-color: brown;
 }
 
 #end-menu-player-gallery {
@@ -43,4 +39,5 @@
     height: 224px;
     object-fit: contain;
     background-color: var(--tertiary-color);
+    border: 2px solid var(--primary-color);
 }

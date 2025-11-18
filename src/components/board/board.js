@@ -66,7 +66,7 @@ const resetFreehandButton = () => {
         "Reset",
         resetFreehand
     );
-    button.id = "reset-button";
+    button.classList.add("reset-button");
     const refreshLogo = document.getElementById("refresh-logo").cloneNode(true);
     refreshLogo.setAttribute("width", "32px");
     refreshLogo.setAttribute("height", "32px");
@@ -101,12 +101,11 @@ const displayGoalButton = () => {
 const addFreehandShortcuts = () => {
     document.addEventListener("keydown", (e) => {
         if (e.ctrlKey && e.key === "q") {
-            const button = document.getElementById("reset-button");
-            button.classList.add("button-is-pressed");
-            button.addEventListener("transitionend", function handle() {
-                this.removeEventListener("transitionend", handle);
-                this.classList.remove("button-is-pressed");
-            });
+            const buttons = document.getElementsByClassName("reset-button");
+            for (let i = 0; i < buttons.length; i++) {
+                buttons.item(i).click();
+            }
+
             resetFreehand();
         }
     });
