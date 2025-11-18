@@ -1,6 +1,6 @@
 import "./image-show.css";
-import { calcFreehandSize } from "../board";
 import { Button } from "../button";
+import { calcFreehandSize } from "../board";
 
 export const ImageShow = () => {
     const imageShow = document.createElement("div");

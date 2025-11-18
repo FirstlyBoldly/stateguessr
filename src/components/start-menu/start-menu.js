@@ -27,8 +27,8 @@ export class StartMenu extends MenuPrototype {
         tips.innerHTML = `
             <h1>Tips</h1>
             <ul>
-                <li>[ <span id="reset-icon-placeholder">Reset Icon</span> ${StartMenu.isMobile ? "": "or Ctrl+q"} ] Reset Canvas</li>
-                <li>[ <span id="flag-icon-placeholder">Flag Icon</span> ] Preview Target State</li>
+                <li>[ <span id="reset-icon-placeholder">Reset Icon</span> ${StartMenu.isMobile ? "": "or Ctrl+q"} ] <wbr>Reset Canvas</li>
+                <li>[ <span id="flag-icon-placeholder">Flag Icon</span> ] <wbr>Preview Target State</li>
             </ul>
         `;
 
