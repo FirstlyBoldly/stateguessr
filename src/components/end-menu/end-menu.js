@@ -10,15 +10,12 @@ export class EndMenu extends MenuPrototype {
         this.menu.classList.add("stateguessr-background");
         this.contentWrapper.id = "end-menu-content-wrapper";
 
-        const text = document.createElement("div");
-        text.innerHTML = `
-            <h1>Player Gallery</h1>
-        `;
+        this.text = document.createElement("div");
 
         this.gallery = document.createElement("div");
         this.gallery.id = "end-menu-player-gallery";
 
-        this.contentWrapper.append(text, this.gallery);
+        this.contentWrapper.append(this.text, this.gallery);
 
         this.retryButton = Button("retry", () => {
             this.close();
@@ -50,5 +47,12 @@ export class EndMenu extends MenuPrototype {
 
     emptyPlayerGallery() {
         this.gallery.innerHTML = "";
+    }
+
+    setStats(correct, total) {
+        this.text.innerHTML = `
+            <h1>Player Gallery</h1>
+            <p>The model recognized ${correct} out of ${total} correctly.</p>
+        `;
     }
 }

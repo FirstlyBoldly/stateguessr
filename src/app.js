@@ -51,7 +51,7 @@ startMenu.closeButton.addEventListener("click", () => {
 
     // Variables of the game loop.
     const MAX_ROUNDS = 5;
-    const ROUND_DURATION_IN_SECONDS = 20;
+    const ROUND_DURATION_IN_SECONDS = 10;
     const INTERMISSION_DURATION_IN_SECONDS = 2;
     const ROUND_STARTING_NUMBER = 0;
 
@@ -89,6 +89,7 @@ startMenu.closeButton.addEventListener("click", () => {
         sign.lock();
         indicator.lock();
 
+        endMenu.setStats(correctGuesses, MAX_ROUNDS);
         endMenu.open();
     };
 
@@ -189,8 +190,6 @@ startMenu.closeButton.addEventListener("click", () => {
             if (prediction) {
                 sign.write(prediction);
                 indicator.write("?");
-
-                console.log(prediction, state);
                 if (prediction === state) {
                     winRound(prediction);
                 }
