@@ -15,7 +15,7 @@ let inputs = [];
 export const canvasEvents = {
     canvasUpdated: "canvas:updated",
     canvasCleared: "canvas:reset",
-}
+};
 
 export const canvasUpdated = () => {
     return new CustomEvent(canvasEvents.canvasUpdated);
@@ -39,8 +39,8 @@ const getCoordsFromEvent = (e, freehand) => {
         x: e.offsetX ?? e.touches[0].clientX - rect.left,
         y: e.offsetY ?? e.touches[0].clientY - rect.top,
         pressure: e.pressure ?? 0.5,
-    }
-}
+    };
+};
 
 const drawStroke = (ctx, points) => {
     const pathData = getSvgPathFromStroke(points);
@@ -109,17 +109,49 @@ export const Freehand = () => {
     const ctx = freehand.getContext("2d");
     freehand.classList.add("freehand");
 
-    freehand.addEventListener("mousedown", (e) => { handleDown(e, freehand); });
-    freehand.addEventListener("touchstart", (e) => { handleDown(e, freehand); }, { passive: false });
+    freehand.addEventListener("mousedown", (e) => {
+        handleDown(e, freehand);
+    });
+    freehand.addEventListener(
+        "touchstart",
+        (e) => {
+            handleDown(e, freehand);
+        },
+        { passive: false },
+    );
 
-    freehand.addEventListener("mousemove", (e) => { handleMove(e, freehand); });
-    freehand.addEventListener("touchmove", (e) => { handleMove(e, freehand); }, { passive: false });
+    freehand.addEventListener("mousemove", (e) => {
+        handleMove(e, freehand);
+    });
+    freehand.addEventListener(
+        "touchmove",
+        (e) => {
+            handleMove(e, freehand);
+        },
+        { passive: false },
+    );
 
-    freehand.addEventListener("mouseleave", (e) => { handleLeave(e, ctx); });
-    freehand.addEventListener("touchcancel", (e) => { handleLeave(e, ctx); }, { passive: false });
+    freehand.addEventListener("mouseleave", (e) => {
+        handleLeave(e, ctx);
+    });
+    freehand.addEventListener(
+        "touchcancel",
+        (e) => {
+            handleLeave(e, ctx);
+        },
+        { passive: false },
+    );
 
-    freehand.addEventListener("mouseup", (e) => { handleUp(e, ctx); });
-    freehand.addEventListener("touchend", (e) => { handleUp(e, ctx); }, { passive: false });
+    freehand.addEventListener("mouseup", (e) => {
+        handleUp(e, ctx);
+    });
+    freehand.addEventListener(
+        "touchend",
+        (e) => {
+            handleUp(e, ctx);
+        },
+        { passive: false },
+    );
 
     return freehand;
 };

@@ -8,7 +8,9 @@
     margin-bottom: var(--gap-large);
 }
 
-.stat-display-item-1, .stat-display-item-2, .stat-display-item-3 {
+.stat-display-item-1,
+.stat-display-item-2,
+.stat-display-item-3 {
     margin: auto 0;
 }
 

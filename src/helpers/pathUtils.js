@@ -1,8 +1,6 @@
 export const getFilename = (path) => {
-    const lastOfSlash = Math.max(
-        path.lastIndexOf("/"),
-        path.lastIndexOf("\\")
-    ) + 1;
+    const lastOfSlash =
+        Math.max(path.lastIndexOf("/"), path.lastIndexOf("\\")) + 1;
     const lastOfDot = path.lastIndexOf(".");
 
     return path.substr(lastOfSlash, lastOfDot - lastOfSlash);

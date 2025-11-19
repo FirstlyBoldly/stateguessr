@@ -23,7 +23,8 @@ export class Display {
             offColor: options.offColor ?? Display.defaultOffColor,
             shadowBlur: options.shadowBlur ?? 15,
             shadowColor: options.shadowColor ?? "#FF4200",
-            backgroundColor: options.backgroundColor ?? Display.defaultBackgroundColor,
+            backgroundColor:
+                options.backgroundColor ?? Display.defaultBackgroundColor,
 
             playSound: options.playSound ?? true,
 
@@ -62,9 +63,15 @@ export class Display {
         this.charWidth = this.options.charWidthInDots * this.fullDotLength;
         this.charHeight = this.options.charHeightInDots * this.fullDotLength;
 
-        const totalCharBufferWidth = (this.options.length - 1) * this.fullDotLength;
-        this.canvas.width = this.charWidth * this.options.length + totalCharBufferWidth + this.options.canvasPaddingInDots * 2 * this.fullDotLength;
-        this.canvas.height = this.charHeight + this.options.canvasPaddingInDots * 2 * this.fullDotLength;
+        const totalCharBufferWidth =
+            (this.options.length - 1) * this.fullDotLength;
+        this.canvas.width =
+            this.charWidth * this.options.length +
+            totalCharBufferWidth +
+            this.options.canvasPaddingInDots * 2 * this.fullDotLength;
+        this.canvas.height =
+            this.charHeight +
+            this.options.canvasPaddingInDots * 2 * this.fullDotLength;
     }
 
     resizeDot(dotSize, dotPadding) {
@@ -90,7 +97,12 @@ export class Display {
         const x = (patternCanvas.width - patternCanvas.width / 2) / 2;
         const y = (patternCanvas.height - patternCanvas.height / 2) / 2;
 
-        patternCtx.fillRect(x, y, patternCanvas.width / 2, patternCanvas.height / 2);
+        patternCtx.fillRect(
+            x,
+            y,
+            patternCanvas.width / 2,
+            patternCanvas.height / 2,
+        );
 
         const pattern = this.ctx.createPattern(patternCanvas, "repeat");
         this.ctx.fillStyle = pattern;
@@ -118,7 +130,12 @@ export class Display {
         }
 
         const calcX = (index) => {
-            return charIndex * this.charWidth + (index + 1) * this.fullDotLength + this.options.dotPadding + this.charMarginCumulative;
+            return (
+                charIndex * this.charWidth +
+                (index + 1) * this.fullDotLength +
+                this.options.dotPadding +
+                this.charMarginCumulative
+            );
         };
 
         const calcY = (index) => {
@@ -126,9 +143,17 @@ export class Display {
         };
 
         const firstDot = calcX(0);
-        const ok = firstDot + this.fullDotLength * this.options.charWidthInDots - 1 < this.canvas.width ? true : false;
+        const ok =
+            firstDot + this.fullDotLength * this.options.charWidthInDots - 1 <
+            this.canvas.width
+                ? true
+                : false;
         for (let rowIndex = 0; rowIndex < dotArray.length; rowIndex++) {
-            for (let columnIndex = 0; columnIndex < dotArray[rowIndex].length; columnIndex++) {
+            for (
+                let columnIndex = 0;
+                columnIndex < dotArray[rowIndex].length;
+                columnIndex++
+            ) {
                 if (dotArray[rowIndex][columnIndex]) {
                     const x = calcX(columnIndex);
                     const y = calcY(rowIndex);
@@ -163,7 +188,8 @@ export class Display {
 
     setScroll(stopIndex) {
         this.clearScroll();
-        let scrollText = this.text + " ".repeat(this.options.textScrollGapInDots);
+        let scrollText =
+            this.text + " ".repeat(this.options.textScrollGapInDots);
         this.scrollTimeout = setInterval(() => {
             this.clear();
             for (let i = 0; i < stopIndex; i++) {
@@ -208,7 +234,7 @@ export class Display {
         }
 
         this.render();
-    };
+    }
 
     lock() {
         this.locked = true;

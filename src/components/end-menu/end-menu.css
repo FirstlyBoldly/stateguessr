@@ -40,5 +40,6 @@
     object-fit: contain;
     background-color: var(--tertiary-color);
     border: 2px solid var(--primary-color);
-    box-shadow: var(--gap-small) var(--gap-small) var(--gap-small) var(--primary-color);
+    box-shadow: var(--gap-small) var(--gap-small) var(--gap-small)
+        var(--primary-color);
 }

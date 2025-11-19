@@ -16,7 +16,7 @@ export class MenuPrototype {
         this.buttonWrapper.classList.add("menu-button-wrapper");
 
         this.closeButton = Button("x", () => {
-            this.close()
+            this.close();
         });
         this.closeButton.classList.add("menu-close-button");
         this.buttonWrapper.appendChild(this.closeButton);
@@ -50,18 +50,26 @@ export class MenuPrototype {
         const footer = document.getElementById("app-footer");
         const displayContainerStyleBottom = () => {
             const style = window.getComputedStyle(displayContainer);
-            return displayContainer.getBoundingClientRect().bottom + window.scrollY + parseFloat(style.marginBottom);
+            return (
+                displayContainer.getBoundingClientRect().bottom +
+                window.scrollY +
+                parseFloat(style.marginBottom)
+            );
         };
 
         const wrapper = document.getElementById("wrapper");
         const footerStyleTop = () => {
             const style = window.getComputedStyle(wrapper);
-            return footer.getBoundingClientRect().top + window.scrollY - parseFloat(style.margin);
+            return (
+                footer.getBoundingClientRect().top +
+                window.scrollY -
+                parseFloat(style.margin)
+            );
         };
 
         this.menu.style.top = `${displayContainerStyleBottom()}px`;
         this.menu.style.height = `${footerStyleTop() - displayContainerStyleBottom()}px`;
-    }
+    };
 
     open = (onOpen) => {
         setTimeout(() => {
@@ -78,14 +86,14 @@ export class MenuPrototype {
             if (onOpen) {
                 onOpen();
             }
-        }
+        };
 
         // this.menu.addEventListener("transitionend", handler);
 
         setTimeout(() => {
             handler();
         }, 1000);
-    }
+    };
 
     close = (onClose = null) => {
         setTimeout(() => {
@@ -102,12 +110,12 @@ export class MenuPrototype {
             if (onClose) {
                 onClose();
             }
-        }
+        };
 
         // this.menu.addEventListener("transitionend", handler);
 
         setTimeout(() => {
             handler();
         }, 1000);
-    }
+    };
 }

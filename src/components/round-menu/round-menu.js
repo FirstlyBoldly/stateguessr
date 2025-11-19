@@ -22,4 +22,4 @@ export class RoundMenu extends MenuPrototype {
 
         this.contentWrapper.append(text, img);
     }
-};
+}

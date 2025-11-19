@@ -24,7 +24,8 @@ export const DisplayContainer = (app) => {
 
         const newContainerWidth = containerBaseWidth - difference;
         const newCanvasStyleWidth = signBaseClientWidth - difference;
-        const newCanvasWidth = newCanvasStyleWidth * signCanvasBaseWidth / signBaseClientWidth;
+        const newCanvasWidth =
+            (newCanvasStyleWidth * signCanvasBaseWidth) / signBaseClientWidth;
 
         sign.canvas.width = newCanvasWidth;
         sign.canvas.style.width = `${newCanvasStyleWidth}px`;
@@ -60,7 +61,7 @@ export const DisplayContainer = (app) => {
     const x = window.matchMedia("(max-width: 576px)");
     x.addEventListener("change", () => {
         resizeDot(x);
-    })
+    });
 
     window.addEventListener("resize", () => {
         resizeSign();

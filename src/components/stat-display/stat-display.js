@@ -20,7 +20,7 @@ export const closeStatDisplay = (statContainer) => {
 
 export const StatDisplay = (parentElement) => {
     const container = document.createElement("div");
-    container.id ="stat-container";
+    container.id = "stat-container";
 
     const sharedOptions = {
         playSound: false,
@@ -28,16 +28,26 @@ export const StatDisplay = (parentElement) => {
         dotPadding: 1,
     };
 
-    const roundIndicator = new Display(Object.assign({}, sharedOptions, { length: 2 }));
+    const roundIndicator = new Display(
+        Object.assign({}, sharedOptions, { length: 2 }),
+    );
     const timer = new Timer();
-    const scoreIndicator = new Display(Object.assign({}, sharedOptions, { length: 3 }));
+    const scoreIndicator = new Display(
+        Object.assign({}, sharedOptions, { length: 3 }),
+    );
 
-    roundIndicator.canvas.classList.add("display-container", "stat-display-item-1");
+    roundIndicator.canvas.classList.add(
+        "display-container",
+        "stat-display-item-1",
+    );
     roundIndicator.write("#-");
 
     timer.canvas.classList.add("stat-display-item-2");
 
-    scoreIndicator.canvas.classList.add("display-container", "stat-display-item-3");
+    scoreIndicator.canvas.classList.add(
+        "display-container",
+        "stat-display-item-3",
+    );
     scoreIndicator.write("-/-");
 
     container.append(
@@ -67,7 +77,7 @@ export const StatDisplay = (parentElement) => {
     resize(x);
     x.addEventListener("change", () => {
         resize(x);
-    })
+    });
 
     return [container, roundIndicator, timer, scoreIndicator];
 };

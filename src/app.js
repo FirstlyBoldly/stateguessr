@@ -6,10 +6,18 @@ import { StartMenu } from "./components/start-menu";
 import { ImageShow } from "./components/image-show";
 import { canvasEvents } from "./components/freehand";
 import { DisplayContainer } from "./components/display-container";
-import { closeStatDisplay, openStatDisplay, StatDisplay } from "./components/stat-display";
-import { enableFreehandShortcuts, Board, disableFreehandShortcuts, resetFreehand } from "./components/board";
+import {
+    closeStatDisplay,
+    openStatDisplay,
+    StatDisplay,
+} from "./components/stat-display";
+import {
+    enableFreehandShortcuts,
+    Board,
+    disableFreehandShortcuts,
+    resetFreehand,
+} from "./components/board";
 import { getUniqueValueFromObject, loadStates } from "./helpers";
-import { Button } from "./components/button";
 
 const app = document.getElementById("app");
 
@@ -138,7 +146,7 @@ startMenu.closeButton.addEventListener("click", () => {
 
         state = getUniqueValueFromObject(states, Object.keys(playerImages));
 
-        states[state]().then(module => {
+        states[state]().then((module) => {
             timer.write("--/--");
 
             imageShowDisplayImage.src = module.default;
@@ -177,19 +185,17 @@ startMenu.closeButton.addEventListener("click", () => {
     // We might need to do something about this nested mess...
     window.addEventListener(canvasEvents.canvasUpdated, () => {
         const canvas = document.getElementById("front-canvas");
-        predictState(canvas).then(
-            (prediction) => {
-                if (prediction) {
-                    sign.write(prediction);
-                    indicator.write("?");
+        predictState(canvas).then((prediction) => {
+            if (prediction) {
+                sign.write(prediction);
+                indicator.write("?");
 
-                    console.log(prediction, state);
-                    if (prediction === state) {
-                        winRound(prediction);
-                    }
+                console.log(prediction, state);
+                if (prediction === state) {
+                    winRound(prediction);
                 }
             }
-        );
+        });
     });
 
     window.addEventListener(canvasEvents.canvasCleared, () => {

@@ -1,53 +1,65 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StateGuessr</title>
-    <link rel="icon" type="image/x-icon" href="/images/stateguessr_icon.png">
-    <link rel="stylesheet" type="text/css" href="/src/global.css">
-    <script type="module" src="/src/app.js" defer></script>
-</head>
-<body>
-    <div id="wrapper">
-        <div id="app">
-            <div id="loading-loop"></div>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>StateGuessr</title>
+        <link
+            rel="icon"
+            type="image/x-icon"
+            href="/images/stateguessr_icon.png"
+        />
+        <link rel="stylesheet" type="text/css" href="/src/global.css" />
+        <script type="module" src="/src/app.js" defer></script>
+    </head>
+    <body>
+        <div id="wrapper">
+            <div id="app">
+                <div id="loading-loop"></div>
+            </div>
+            <footer id="app-footer">
+                <strong>--- 2025 Ankha's Greens ---</strong>
+            </footer>
         </div>
-        <footer id="app-footer">
-            <strong>--- 2025 Ankha's Greens ---</strong>
-        </footer>
-    </div>
-    <div id="props" class="hide">
-        <object data="/src/assets/images/refresh.svg" type="image/svg+xml" id="refresh-logo"></object>
-        <object data="/src/assets/images/target-flag.svg" type="image/svg+xml" id="target-flag-logo"></object>
-    </div>
-    <script>
-        const app = document.getElementById("app");
-        const loadingLoop = document.getElementById("loading-loop");
+        <div id="props" class="hide">
+            <object
+                data="/src/assets/images/refresh.svg"
+                type="image/svg+xml"
+                id="refresh-logo"
+            ></object>
+            <object
+                data="/src/assets/images/target-flag.svg"
+                type="image/svg+xml"
+                id="target-flag-logo"
+            ></object>
+        </div>
+        <script>
+            const app = document.getElementById("app");
+            const loadingLoop = document.getElementById("loading-loop");
 
-        let count = 1;
-        const incrementLoadingAnimation = () => {
-            count %= 4;
-            loadingLoop.innerHTML = `<h1>Loading${".".repeat(count)}</h1>`;
-            count++;
-        }
+            let count = 1;
+            const incrementLoadingAnimation = () => {
+                count %= 4;
+                loadingLoop.innerHTML = `<h1>Loading${".".repeat(count)}</h1>`;
+                count++;
+            };
 
-        incrementLoadingAnimation();
-
-        const timeout = setInterval(() => {
             incrementLoadingAnimation();
-        }, 100);
 
-        const callback = (mutationList, observer) => {
-            if (mutationList) {
-                clearInterval(timeout);
-                loadingLoop.remove();
-            }
-        }
+            const timeout = setInterval(() => {
+                incrementLoadingAnimation();
+            }, 100);
 
-        const config = { childList: true };
-        const observer = new MutationObserver(callback);
-        observer.observe(app, config);
-    </script>
-</body>
+            const callback = (mutationList, observer) => {
+                if (mutationList) {
+                    clearInterval(timeout);
+                    loadingLoop.remove();
+                }
+            };
+
+            const config = { childList: true };
+            const observer = new MutationObserver(callback);
+            observer.observe(app, config);
+        </script>
+    </body>
 </html>

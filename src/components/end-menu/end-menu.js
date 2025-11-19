@@ -46,9 +46,9 @@ export class EndMenu extends MenuPrototype {
             wrapper.append(title, img);
             this.gallery.appendChild(wrapper);
         }
-    };
+    }
 
     emptyPlayerGallery() {
         this.gallery.innerHTML = "";
     }
-};
+}

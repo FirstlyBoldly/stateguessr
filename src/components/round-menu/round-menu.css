@@ -16,5 +16,6 @@
     height: 224px;
     object-fit: contain;
     background-color: rgb(255, 255, 255);
-    box-shadow: var(--gap-small) var(--gap-small) var(--gap-small) var(--primary-color);
+    box-shadow: var(--gap-small) var(--gap-small) var(--gap-small)
+        var(--primary-color);
 }

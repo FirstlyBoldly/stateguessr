@@ -1,23 +1,24 @@
 {
-  "name": "stateguessr",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "dependencies": {
-    "@tensorflow/tfjs": "^4.22.0",
-    "firebase": "^12.4.0",
-    "perfect-freehand": "^1.2.2"
-  },
-  "devDependencies": {
-    "vite": "^7.1.12"
-  }
+    "name": "stateguessr",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "preview": "vite preview"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "type": "commonjs",
+    "dependencies": {
+        "@tensorflow/tfjs": "^4.22.0",
+        "firebase": "^12.4.0",
+        "perfect-freehand": "^1.2.2"
+    },
+    "devDependencies": {
+        "prettier": "3.6.2",
+        "vite": "^7.1.12"
+    }
 }

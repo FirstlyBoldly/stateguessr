@@ -2,12 +2,14 @@ import "./timer.css";
 import { Display } from "../display";
 
 export class Timer extends Display {
-    constructor(options = {
-        length: 5,
-        playSound: false,
-        dotSize: 4,
-        dotPadding: 1,
-    }) {
+    constructor(
+        options = {
+            length: 5,
+            playSound: false,
+            dotSize: 4,
+            dotPadding: 1,
+        },
+    ) {
         super(options);
         this.canvas.classList.add("display-container");
         this.interval = null;
@@ -21,8 +23,8 @@ export class Timer extends Display {
 
         const getFormattedTime = () => {
             const format = new Intl.NumberFormat("en", {
-                    minimumIntegerDigits: 4,
-                    useGrouping: false,
+                minimumIntegerDigits: 4,
+                useGrouping: false,
             }).format(seconds);
 
             return format.slice(0, 2) + ":" + format.slice(2, format.length);

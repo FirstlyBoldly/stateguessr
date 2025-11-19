@@ -1,9 +1,9 @@
 :root {
     --primary-color: #000000;
-    --secondary-color: #FF9001;
-    --tertiary-color: #C4C4C4;
-    --accent-color: #FF4200;
-    --complementary-color: #4B4B4B;
+    --secondary-color: #ff9001;
+    --tertiary-color: #c4c4c4;
+    --accent-color: #ff4200;
+    --complementary-color: #4b4b4b;
     --gap-small: 4px;
     --gap-normal: 8px;
     --gap-large: 16px;
@@ -14,7 +14,12 @@
     font-family: Arial, Helvetica, sans-serif;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     margin: 0;
     padding: 0;
     font-size: 2rem;
@@ -24,7 +29,11 @@ h1 {
     font-size: 3rem;
 }
 
-div, p, span, strong, button {
+div,
+p,
+span,
+strong,
+button {
     font-size: 2rem;
 }
 
@@ -89,11 +98,21 @@ object {
 
 @keyframes pulse-glow {
     0% {
-        box-shadow: var(--gap-small) var(--gap-small) var(--gap-small) color-mix(in srgb, var(--secondary-color) 90%, var(--accent-color) 10%)
+        box-shadow: var(--gap-small) var(--gap-small) var(--gap-small)
+            color-mix(
+                in srgb,
+                var(--secondary-color) 90%,
+                var(--accent-color) 10%
+            );
     }
 
     100% {
-        box-shadow: var(--gap-small) var(--gap-small) var(--gap-normal) color-mix(in srgb, var(--secondary-color) 10%, var(--accent-color) 90%)
+        box-shadow: var(--gap-small) var(--gap-small) var(--gap-normal)
+            color-mix(
+                in srgb,
+                var(--secondary-color) 10%,
+                var(--accent-color) 90%
+            );
     }
 }
 

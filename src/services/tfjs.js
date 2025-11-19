@@ -1,6 +1,8 @@
 import * as tf from "@tensorflow/tfjs";
 
-const metadata = await fetch("/model/metadata.json").then(response => response.json());
+const metadata = await fetch("/model/metadata.json").then((response) =>
+    response.json(),
+);
 const model = await tf.loadGraphModel("/model/model.json");
 
 export const predictState = (pixels) => {

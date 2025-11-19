@@ -21,13 +21,18 @@ const getCopyURL = (canvas) => {
 export const calcFreehandSize = () => {
     const displayContainer = document.getElementById("text-display");
     const displayContainerStyle = window.getComputedStyle(displayContainer);
-    const displayContainerViewportOffsets = displayContainer.getBoundingClientRect();
+    const displayContainerViewportOffsets =
+        displayContainer.getBoundingClientRect();
     const wrapperClientWidth = document.getElementById("wrapper").clientWidth;
     const newFreehandSize = Math.max(
-        window.innerHeight - displayContainerViewportOffsets.bottom - parseInt(displayContainerStyle.marginBottom) * 2,
-        224
+        window.innerHeight -
+            displayContainerViewportOffsets.bottom -
+            parseInt(displayContainerStyle.marginBottom) * 2,
+        224,
     );
-    return newFreehandSize > wrapperClientWidth ? wrapperClientWidth : newFreehandSize;
+    return newFreehandSize > wrapperClientWidth
+        ? wrapperClientWidth
+        : newFreehandSize;
 };
 
 export const resetFreehand = () => {
@@ -52,22 +57,15 @@ export const resetFreehand = () => {
 
     const copy = getCopyURL(front);
 
-    clearCanvas(
-        front.getContext("2d"),
-        front.width,
-        front.height
-    );
+    clearCanvas(front.getContext("2d"), front.width, front.height);
     front.classList.add("dropped");
     rippingPaperSoundEffect.play();
 
     return copy;
-}
+};
 
 const resetFreehandButton = () => {
-    const button = Button(
-        "Reset",
-        resetFreehand
-    );
+    const button = Button("Reset", resetFreehand);
     button.classList.add("reset-button");
     const refreshLogo = document.getElementById("refresh-logo").cloneNode(true);
     refreshLogo.setAttribute("width", "32px");
@@ -81,15 +79,14 @@ const resetFreehandButton = () => {
 };
 
 const displayGoalButton = () => {
-    const button = Button(
-        "Goal",
-        () => {
-            const imageShow = document.getElementById("image-show");
-            imageShow.style.display = "inline";
-        }
-    );
+    const button = Button("Goal", () => {
+        const imageShow = document.getElementById("image-show");
+        imageShow.style.display = "inline";
+    });
     button.id = "goal-display-button";
-    const targetFlagLogo = document.getElementById("target-flag-logo").cloneNode(true);
+    const targetFlagLogo = document
+        .getElementById("target-flag-logo")
+        .cloneNode(true);
     targetFlagLogo.setAttribute("width", "24px");
     targetFlagLogo.setAttribute("height", "24px");
     if (targetFlagLogo) {
@@ -98,10 +95,10 @@ const displayGoalButton = () => {
     }
 
     return button;
-}
+};
 
 const resetFreehandShortcut = (e) => {
-    if ((e.ctrlKey && e.key === "q") && shortcutsEnabled) {
+    if (e.ctrlKey && e.key === "q" && shortcutsEnabled) {
         const buttons = document.getElementsByClassName("reset-button");
         for (let i = 0; i < buttons.length; i++) {
             buttons.item(i).click();
@@ -109,7 +106,7 @@ const resetFreehandShortcut = (e) => {
 
         resetFreehand();
     }
-}
+};
 
 export const addFreehandShortcuts = () => {
     document.addEventListener("keydown", resetFreehandShortcut);

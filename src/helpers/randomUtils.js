@@ -1,5 +1,5 @@
 export const choice = (object) => {
-    const keys = Object.keys(object)
+    const keys = Object.keys(object);
     const size = keys.length;
     if (size === 0) {
         return null;

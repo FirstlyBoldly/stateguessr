@@ -4,7 +4,10 @@ import { MenuPrototype } from "../menu";
 
 export class StartMenu extends MenuPrototype {
     // Courtesy of Aria Noorghorbani, accessed from https://stackoverflow.com/questions/77506413/detecting-if-the-user-is-on-desktop-or-mobile-in-the-browser.
-    static isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    static isMobile =
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+            navigator.userAgent,
+        );
 
     constructor(initialState = "opened") {
         super(initialState);
@@ -28,7 +31,7 @@ export class StartMenu extends MenuPrototype {
         tips.innerHTML = `
             <h1>Tips</h1>
             <ul>
-                <li>[ <span id="reset-icon-placeholder">Reset Icon</span> ${StartMenu.isMobile ? "": "or Ctrl+q"} ] <wbr>Reset Canvas</li>
+                <li>[ <span id="reset-icon-placeholder">Reset Icon</span> ${StartMenu.isMobile ? "" : "or Ctrl+q"} ] <wbr>Reset Canvas</li>
                 <li>[ <span id="flag-icon-placeholder">Flag Icon</span> ] <wbr>Preview Target State</li>
             </ul>
         `;
@@ -36,7 +39,9 @@ export class StartMenu extends MenuPrototype {
         const dummyButton1 = Button();
         dummyButton1.classList.add("dummy-button", "reset-button");
 
-        const resetLogo = document.getElementById("refresh-logo").cloneNode(true);
+        const resetLogo = document
+            .getElementById("refresh-logo")
+            .cloneNode(true);
         resetLogo.setAttribute("width", "36px");
         resetLogo.setAttribute("height", "36px");
 
@@ -45,16 +50,22 @@ export class StartMenu extends MenuPrototype {
         const dummyButton2 = Button();
         dummyButton2.classList.add("dummy-button");
 
-        const targetFlagLogo = document.getElementById("target-flag-logo").cloneNode(true);
+        const targetFlagLogo = document
+            .getElementById("target-flag-logo")
+            .cloneNode(true);
         targetFlagLogo.setAttribute("width", "28px");
         targetFlagLogo.setAttribute("height", "28px");
 
         dummyButton2.appendChild(targetFlagLogo);
 
-        const resetIconPlaceholder = tips.querySelector("#reset-icon-placeholder");
+        const resetIconPlaceholder = tips.querySelector(
+            "#reset-icon-placeholder",
+        );
         resetIconPlaceholder.replaceWith(dummyButton1);
 
-        const flagIconplaceholder = tips.querySelector("#flag-icon-placeholder");
+        const flagIconplaceholder = tips.querySelector(
+            "#flag-icon-placeholder",
+        );
         flagIconplaceholder.replaceWith(dummyButton2);
 
         this.closeButton.innerText = "start";
@@ -62,4 +73,4 @@ export class StartMenu extends MenuPrototype {
 
         this.contentWrapper.append(summary, tips);
     }
-};
+}
