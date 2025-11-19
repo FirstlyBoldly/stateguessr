@@ -1,6 +1,5 @@
 import "./global.css";
 import { predictState } from "./services/tfjs";
-import { StatDisplay } from "./components/stat-display";
 import { EndMenu } from "./components/end-menu";
 import { RoundMenu } from "./components/round-menu";
 import { StartMenu } from "./components/start-menu";
@@ -8,6 +7,7 @@ import { ImageShow } from "./components/image-show";
 import { canvasEvents } from "./components/freehand";
 import { Board, resetFreehand } from "./components/board";
 import { DisplayContainer } from "./components/display-container";
+import { closeStatDisplay, openStatDisplay, StatDisplay } from "./components/stat-display";
 import { getUniqueValueFromObject, loadStates } from "./helpers";
 
 const app = document.getElementById("app");
@@ -36,11 +36,7 @@ startMenu.closeButton.addEventListener("click", () => {
         startMenu.menu.remove();
     });
 
-    statContainer.style.display = "grid";
-    window.dispatchEvent(new Event("resize"));
-    setTimeout(() => {
-        statContainer.style.top = "0";
-    }, 100);
+    openStatDisplay(statContainer);
 
     // Variables of the game loop.
     const MAX_ROUNDS = 5;
@@ -63,6 +59,8 @@ startMenu.closeButton.addEventListener("click", () => {
     const endGame = () => {
         clearInterval(roundInterval);
         clearTimeout(roundTimeout);
+
+        closeStatDisplay(statContainer);
 
         // Make sure the board is not interactable until another round/game starts.
         board.style.pointerEvents = "none";
@@ -170,6 +168,7 @@ startMenu.closeButton.addEventListener("click", () => {
                         indicator.lock();
 
                         correctGuesses++;
+                        scoreIndicator.write(`${correctGuesses}/${MAX_ROUNDS}`);
                         setTimeout(endRound, 2000);
                     }
                 }
@@ -185,6 +184,8 @@ startMenu.closeButton.addEventListener("click", () => {
     endMenu.retryButton.addEventListener("click", () => {
         roundNumber = ROUND_STARTING_NUMBER;
         board.style.pointerEvents = "auto";
+
+        openStatDisplay(statContainer);
 
         endMenu.close(() => {
             endMenu.emptyPlayerGallery();

@@ -2,6 +2,22 @@ import "./stat-display.css";
 import { Timer } from "../timer";
 import { Display } from "../display";
 
+export const openStatDisplay = (statContainer) => {
+    statContainer.style.display = "grid";
+    window.dispatchEvent(new Event("resize"));
+    setTimeout(() => {
+        statContainer.style.top = "0";
+    }, 100);
+};
+
+export const closeStatDisplay = (statContainer) => {
+    statContainer.style.top = "-100px";
+    setTimeout(() => {
+        statContainer.style.display = "none";
+        window.dispatchEvent(new Event("resize"));
+    }, 900);
+};
+
 export const StatDisplay = (parentElement) => {
     const container = document.createElement("div");
     container.id ="stat-container";

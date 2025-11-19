@@ -27,10 +27,17 @@ export class Timer extends Display {
             return format.slice(0, 2) + ":" + format.slice(2, format.length);
         };
 
+        let options = {};
         this.write(getFormattedTime());
         let interval = setInterval(() => {
             --seconds;
-            this.write(getFormattedTime());
+            if (seconds <= 5) {
+                options = {
+                    onColor: "#BC0000",
+                };
+            }
+
+            this.write(getFormattedTime(), options);
             if (seconds === 0) {
                 clearInterval(interval);
                 return;
