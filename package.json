@@ -15,7 +15,8 @@
     "dependencies": {
         "@tensorflow/tfjs": "^4.22.0",
         "firebase": "^12.4.0",
-        "perfect-freehand": "^1.2.2"
+        "perfect-freehand": "^1.2.2",
+        "uuid": "^13.0.0"
     },
     "devDependencies": {
         "prettier": "3.6.2",

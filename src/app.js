@@ -18,6 +18,7 @@ import {
     resetFreehand,
 } from "./components/board";
 import { getUniqueValueFromObject, loadStates } from "./helpers";
+import { upload } from "./services/storage";
 
 const app = document.getElementById("app");
 
@@ -99,6 +100,10 @@ startMenu.closeButton.addEventListener("click", () => {
 
         imageShowCloseButton.click();
         board.style.pointerEvents = "none";
+
+        const canvas = document.getElementById("front-canvas");
+        upload(roundNumber, state, canvas);
+
         playerImages[state] = resetFreehand();
 
         sign.unlock();
@@ -188,6 +193,7 @@ startMenu.closeButton.addEventListener("click", () => {
     // We might need to do something about this nested mess...
     window.addEventListener(canvasEvents.canvasUpdated, () => {
         const canvas = document.getElementById("front-canvas");
+        upload(roundNumber, state, canvas);
         predictState(canvas).then((prediction) => {
             if (prediction) {
                 sign.write(prediction);
