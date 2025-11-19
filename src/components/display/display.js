@@ -32,23 +32,14 @@ export class Display {
             scrollIntervalDelay: options.scrollIntervalDelay ?? 1000,
         };
 
-        this.optionsBackup = structuredClone(this.options);
-
         this.locked = false;
 
         this.scrollTimeout = null;
 
-        this.charMarginCumulative = 0;
-        this.fullDotLength = this.options.dotSize + this.options.dotPadding * 2;
-        this.charWidth = this.options.charWidthInDots * this.fullDotLength;
-        this.charHeight = this.options.charHeightInDots * this.fullDotLength;
-
         this.canvas = document.createElement("canvas");
         this.canvas.classList.add("display");
 
-        const totalCharBufferWidth = (this.options.length - 1) * this.fullDotLength;
-        this.canvas.width = this.charWidth * this.options.length + totalCharBufferWidth + this.options.canvasPaddingInDots * 2 * this.fullDotLength;
-        this.canvas.height = this.charHeight + this.options.canvasPaddingInDots * 2 * this.fullDotLength;
+        this.calcRect();
 
         if (this.canvas.getContext) {
             this.ctx = this.canvas.getContext("2d");
@@ -61,6 +52,26 @@ export class Display {
         if (this.text) {
             this.render();
         }
+    }
+
+    calcRect() {
+        this.optionsBackup = structuredClone(this.options);
+
+        this.charMarginCumulative = 0;
+        this.fullDotLength = this.options.dotSize + this.options.dotPadding * 2;
+        this.charWidth = this.options.charWidthInDots * this.fullDotLength;
+        this.charHeight = this.options.charHeightInDots * this.fullDotLength;
+
+        const totalCharBufferWidth = (this.options.length - 1) * this.fullDotLength;
+        this.canvas.width = this.charWidth * this.options.length + totalCharBufferWidth + this.options.canvasPaddingInDots * 2 * this.fullDotLength;
+        this.canvas.height = this.charHeight + this.options.canvasPaddingInDots * 2 * this.fullDotLength;
+    }
+
+    resizeDot(dotSize, dotPadding) {
+        this.options.dotSize = dotSize;
+        this.options.dotPadding = dotPadding;
+        this.calcRect();
+        this.render();
     }
 
     clear() {

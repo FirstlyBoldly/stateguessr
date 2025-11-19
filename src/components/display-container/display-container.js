@@ -33,10 +33,40 @@ export const DisplayContainer = (app) => {
         sign.render();
     };
 
+    const resizeDot = (x) => {
+        if (x.matches) {
+            sign.options.dotSize = 4;
+            sign.options.dotPadding = 1;
+            sign.calcRect();
+            sign.render();
+
+            indicator.options.dotSize = 4;
+            indicator.options.dotPadding = 1;
+            indicator.calcRect();
+            indicator.render();
+        } else {
+            sign.options.dotSize = 8;
+            sign.options.dotPadding = 2;
+            sign.calcRect();
+            sign.render();
+
+            indicator.options.dotSize = 8;
+            indicator.options.dotPadding = 2;
+            indicator.calcRect();
+            indicator.render();
+        }
+    };
+
+    const x = window.matchMedia("(max-width: 576px)");
+    x.addEventListener("change", () => {
+        resizeDot(x);
+    })
+
     window.addEventListener("resize", () => {
         resizeSign();
     });
 
+    resizeDot(x);
     resizeSign();
     return [container, sign, indicator];
 };

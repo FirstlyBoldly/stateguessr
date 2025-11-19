@@ -73,11 +73,6 @@ object {
 }
 
 .display-container {
-    display: flex;
-    flex-wrap: nowrap;
-    flex-direction: row;
-    gap: var(--gap-large);
-    margin-bottom: var(--gap-large);
     animation: pulse-glow 5s infinite alternate;
 }
 

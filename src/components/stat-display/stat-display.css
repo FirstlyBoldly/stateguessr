@@ -5,6 +5,11 @@
     width: 100%;
     grid-template-columns: repeat(3, 1fr);
     transition: top 0.9s ease-in-out;
+    margin-bottom: var(--gap-large);
+}
+
+.stat-display-item-1, .stat-display-item-2, .stat-display-item-3 {
+    margin: auto 0;
 }
 
 .stat-display-item-1 {

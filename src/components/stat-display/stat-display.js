@@ -31,5 +31,27 @@ export const StatDisplay = (parentElement) => {
     );
 
     parentElement.appendChild(container);
+
+    const resize = (x) => {
+        if (x.matches) {
+            roundIndicator.resizeDot(2, 1);
+            timer.resizeDot(3, 1);
+            scoreIndicator.resizeDot(2, 1);
+        } else {
+            const newDotSize = 4;
+            const newDotPadding = 1;
+            const newDotOptions = [newDotSize, newDotPadding];
+            roundIndicator.resizeDot(...newDotOptions);
+            timer.resizeDot(...newDotOptions);
+            scoreIndicator.resizeDot(...newDotOptions);
+        }
+    };
+
+    const x = window.matchMedia("(max-width: 576px)");
+    resize(x);
+    x.addEventListener("change", () => {
+        resize(x);
+    })
+
     return [container, roundIndicator, timer, scoreIndicator];
 };

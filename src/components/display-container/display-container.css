@@ -1,0 +1,12 @@
+#text-display {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: var(--gap-large);
+    margin-bottom: var(--gap-large);
+}
+
+#display-sign {
+    flex-grow: 1;
+}

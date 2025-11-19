@@ -27,7 +27,7 @@ export const ImageShow = () => {
     });
     closeButton.id = "image-show-close-button";
 
-    imageShow.addEventListener("resize", resize);
+    window.addEventListener("resize", resize);
 
     imageShow.append(closeButton, img);
 
