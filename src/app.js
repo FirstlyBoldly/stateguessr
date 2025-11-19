@@ -1,6 +1,6 @@
 import "./global.css";
 import { predictState } from "./services/tfjs";
-import { Timer } from "./components/timer";
+import { StatDisplay } from "./components/stat-display";
 import { EndMenu } from "./components/end-menu";
 import { RoundMenu } from "./components/round-menu";
 import { StartMenu } from "./components/start-menu";
@@ -12,11 +12,10 @@ import { getUniqueValueFromObject, loadStates } from "./helpers";
 
 const app = document.getElementById("app");
 
+const [statContainer, roundIndicator, timer, scoreIndicator] = StatDisplay(app);
+
 // Need direct manipulation of the instances.
 const [, sign, indicator] = DisplayContainer(app);
-
-const timer = new Timer();
-app.appendChild(timer.canvas);
 
 const board = Board();
 app.appendChild(board);
@@ -36,6 +35,12 @@ startMenu.closeButton.addEventListener("click", () => {
     startMenu.close(() => {
         startMenu.menu.remove();
     });
+
+    statContainer.style.display = "grid";
+    window.dispatchEvent(new Event("resize"));
+    setTimeout(() => {
+        statContainer.style.top = "0";
+    }, 100);
 
     // Variables of the game loop.
     const MAX_ROUNDS = 5;
@@ -104,10 +109,13 @@ startMenu.closeButton.addEventListener("click", () => {
 
         sign.unlock();
         indicator.unlock();
-        sign.write(`round:${roundNumber}`);
+        sign.write("next up...");
         indicator.write("-");
         sign.lock();
         indicator.lock();
+
+        roundIndicator.write(`#${roundNumber}`);
+        scoreIndicator.write(`${correctGuesses}/${MAX_ROUNDS}`);
 
         state = getUniqueValueFromObject(states, Object.keys(playerImages));
 

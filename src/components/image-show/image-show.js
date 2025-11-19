@@ -9,10 +9,12 @@ export const ImageShow = () => {
     const img = document.createElement("img");
     img.id = "image-show-display-image";
 
-    const resizeImageShow = () => {
+    const resize = () => {
         const size = calcFreehandSize();
         imageShow.style.width = `${size}px`;
         imageShow.style.height = `${size}px`;
+        img.width = size;
+        img.height = size;
 
         const displayContainer = document.getElementById("text-display");
         const displayContainerRect = displayContainer.getBoundingClientRect();
@@ -25,11 +27,11 @@ export const ImageShow = () => {
     });
     closeButton.id = "image-show-close-button";
 
-    imageShow.addEventListener("resize", resizeImageShow);
+    imageShow.addEventListener("resize", resize);
 
     imageShow.append(closeButton, img);
 
-    resizeImageShow();
+    resize();
 
     return [imageShow, img, closeButton];
 };
