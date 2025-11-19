@@ -17,7 +17,7 @@ const getCopyURL = (canvas) => {
 };
 
 export const calcFreehandSize = () => {
-    const displayContainer = document.getElementById("display-container");
+    const displayContainer = document.getElementById("text-display");
     const displayContainerStyle = window.getComputedStyle(displayContainer);
     const displayContainerViewportOffsets = displayContainer.getBoundingClientRect();
     const wrapperClientWidth = document.getElementById("wrapper").clientWidth;

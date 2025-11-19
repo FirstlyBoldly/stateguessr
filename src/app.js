@@ -1,5 +1,6 @@
 import "./global.css";
 import { predictState } from "./services/tfjs";
+import { Timer } from "./components/timer";
 import { EndMenu } from "./components/end-menu";
 import { RoundMenu } from "./components/round-menu";
 import { StartMenu } from "./components/start-menu";
@@ -14,17 +15,20 @@ const app = document.getElementById("app");
 // Need direct manipulation of the instances.
 const [, sign, indicator] = DisplayContainer(app);
 
+const timer = new Timer();
+app.appendChild(timer.canvas);
+
 const board = Board();
 app.appendChild(board);
-
-const endMenu = new EndMenu();
-app.appendChild(endMenu.menu);
 
 const [imageShow, imageShowDisplayImage, imageShowCloseButton] = ImageShow();
 app.appendChild(imageShow);
 
 const startMenu = new StartMenu();
 app.append(startMenu.menu);
+
+const endMenu = new EndMenu();
+app.appendChild(endMenu.menu);
 
 startMenu.closeButton.addEventListener("click", () => {
     // Get rid of the start menu.
@@ -124,6 +128,8 @@ startMenu.closeButton.addEventListener("click", () => {
                 indicator.unlock();
                 sign.write("stateguessr");
                 indicator.write("!");
+
+                timer.startFrom(ROUND_DURATION_IN_SECONDS);
 
                 let remainingSeconds = ROUND_DURATION_IN_SECONDS;
                 roundInterval = setInterval(() => {

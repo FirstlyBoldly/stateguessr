@@ -14,7 +14,7 @@ export const ImageShow = () => {
         imageShow.style.width = `${size}px`;
         imageShow.style.height = `${size}px`;
 
-        const displayContainer = document.getElementById("display-container");
+        const displayContainer = document.getElementById("text-display");
         const displayContainerRect = displayContainer.getBoundingClientRect();
         const displayContainerStyle = window.getComputedStyle(displayContainer);
         imageShow.style.top = `${displayContainerRect.bottom + parseFloat(displayContainerStyle.marginBottom)}px`;

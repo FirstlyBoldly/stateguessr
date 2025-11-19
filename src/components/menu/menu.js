@@ -46,7 +46,7 @@ export class MenuPrototype {
     }
 
     resize = () => {
-        const displayContainer = document.getElementById("display-container");
+        const displayContainer = document.getElementById("text-display");
         const footer = document.getElementById("app-footer");
         const displayContainerStyleBottom = () => {
             const style = window.getComputedStyle(displayContainer);

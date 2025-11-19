@@ -11,18 +11,22 @@ export class Display {
     constructor(options = {}, text = "") {
         this.options = {
             length: options.length ?? 14,
-            canvasPaddingInDots: options.canvasPadding ?? 1,
-            dotSize: options.dotSize ?? 12,
+
+            dotSize: options.dotSize ?? 8,
             dotPadding: options.dotPadding ?? 2,
+
             charWidthInDots: options.charWidth ?? 5,
             charHeightInDots: options.charHeight ?? 7,
+            canvasPaddingInDots: options.canvasPadding ?? 1,
+
             onColor: options.onColor ?? Display.defaultOnColor,
             offColor: options.offColor ?? Display.defaultOffColor,
             shadowBlur: options.shadowBlur ?? 15,
             shadowColor: options.shadowColor ?? "#FF4200",
             backgroundColor: options.backgroundColor ?? Display.defaultBackgroundColor,
+
             playSound: options.playSound ?? true,
-            changeWithViewport: options.changeWithViewport ?? false,
+
             textScroll: options.textScroll ?? false,
             textScrollGapInDots: options.textScrollGapInDots ?? 3,
             scrollIntervalDelay: options.scrollIntervalDelay ?? 1000,
