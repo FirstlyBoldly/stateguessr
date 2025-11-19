@@ -1,7 +1,8 @@
 import "./display.css";
 import { Fonts } from "./font";
 
-const displayOn = new Audio("/sounds/display-on.mp3");
+// Maybe, maybe not...
+// const displayOn = new Audio("/sounds/...");
 
 export class Display {
     static defaultOnColor = "#FF9001";
@@ -228,9 +229,10 @@ export class Display {
         text = text.toUpperCase();
         if (this.text !== text) {
             this.text = text;
-            if (this.options.playSound) {
-                displayOn.play();
-            }
+            // Maybe, maybe not...
+            // if (this.options.playSound) {
+            //     displayOn.play();
+            // }
         }
 
         this.render();
