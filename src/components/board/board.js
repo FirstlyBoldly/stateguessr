@@ -5,6 +5,8 @@ import { Freehand, clearCanvas } from "../freehand";
 const rippingPaperSoundEffect = new Audio("/sounds/ripping-paper.mp3");
 let freehandIsTransitioning = false;
 
+let shortcutsEnabled = false;
+
 const getCopyURL = (canvas) => {
     const tempCanvas = document.createElement("canvas");
     const tempCtx = tempCanvas.getContext("2d");
@@ -98,17 +100,27 @@ const displayGoalButton = () => {
     return button;
 }
 
-const addFreehandShortcuts = () => {
-    document.addEventListener("keydown", (e) => {
-        if (e.ctrlKey && e.key === "q") {
-            const buttons = document.getElementsByClassName("reset-button");
-            for (let i = 0; i < buttons.length; i++) {
-                buttons.item(i).click();
-            }
-
-            resetFreehand();
+const resetFreehandShortcut = (e) => {
+    if ((e.ctrlKey && e.key === "q") && shortcutsEnabled) {
+        const buttons = document.getElementsByClassName("reset-button");
+        for (let i = 0; i < buttons.length; i++) {
+            buttons.item(i).click();
         }
-    });
+
+        resetFreehand();
+    }
+}
+
+export const addFreehandShortcuts = () => {
+    document.addEventListener("keydown", resetFreehandShortcut);
+};
+
+export const enableFreehandShortcuts = () => {
+    shortcutsEnabled = true;
+};
+
+export const disableFreehandShortcuts = () => {
+    shortcutsEnabled = false;
 };
 
 export const Board = () => {

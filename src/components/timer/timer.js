@@ -10,6 +10,7 @@ export class Timer extends Display {
     }) {
         super(options);
         this.canvas.classList.add("display-container");
+        this.interval = null;
         this.write("--:--");
     }
 
@@ -29,7 +30,7 @@ export class Timer extends Display {
 
         let options = {};
         this.write(getFormattedTime());
-        let interval = setInterval(() => {
+        this.interval = setInterval(() => {
             --seconds;
             if (seconds <= 5) {
                 options = {
@@ -39,7 +40,8 @@ export class Timer extends Display {
 
             this.write(getFormattedTime(), options);
             if (seconds === 0) {
-                clearInterval(interval);
+                clearInterval(this.interval);
+                this.interval = null;
                 return;
             }
         }, 1000);

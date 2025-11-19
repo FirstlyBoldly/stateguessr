@@ -5,10 +5,11 @@ import { RoundMenu } from "./components/round-menu";
 import { StartMenu } from "./components/start-menu";
 import { ImageShow } from "./components/image-show";
 import { canvasEvents } from "./components/freehand";
-import { Board, resetFreehand } from "./components/board";
 import { DisplayContainer } from "./components/display-container";
 import { closeStatDisplay, openStatDisplay, StatDisplay } from "./components/stat-display";
+import { enableFreehandShortcuts, Board, disableFreehandShortcuts, resetFreehand } from "./components/board";
 import { getUniqueValueFromObject, loadStates } from "./helpers";
+import { Button } from "./components/button";
 
 const app = document.getElementById("app");
 
@@ -36,6 +37,8 @@ startMenu.closeButton.addEventListener("click", () => {
         startMenu.menu.remove();
     });
 
+    enableFreehandShortcuts();
+
     openStatDisplay(statContainer);
 
     // Variables of the game loop.
@@ -45,7 +48,6 @@ startMenu.closeButton.addEventListener("click", () => {
     const ROUND_STARTING_NUMBER = 0;
 
     let roundNumber = ROUND_STARTING_NUMBER;
-    let roundTimeout = null;
     let roundInterval = null;
 
     // This will collect the final player drawing at end of each round.
@@ -57,9 +59,8 @@ startMenu.closeButton.addEventListener("click", () => {
     let correctGuesses = 0;
 
     const endGame = () => {
+        disableFreehandShortcuts();
         clearInterval(roundInterval);
-        clearTimeout(roundTimeout);
-
         closeStatDisplay(statContainer);
 
         // Make sure the board is not interactable until another round/game starts.
@@ -84,6 +85,9 @@ startMenu.closeButton.addEventListener("click", () => {
     };
 
     const endRound = () => {
+        disableFreehandShortcuts();
+        clearInterval(roundInterval);
+
         imageShowCloseButton.click();
         board.style.pointerEvents = "none";
         playerImages[state] = resetFreehand();
@@ -96,6 +100,23 @@ startMenu.closeButton.addEventListener("click", () => {
         indicator.lock();
 
         round();
+    };
+
+    const winRound = (state) => {
+        disableFreehandShortcuts();
+        clearInterval(roundInterval);
+        clearInterval(timer.interval);
+
+        sign.unlock();
+        indicator.unlock();
+        sign.write(state, { onColor: "#34b518", shadowColor: "#2b7705" });
+        indicator.write("!", { onColor: "#34b518", shadowColor: "#2b7705" });
+        sign.lock();
+        indicator.lock();
+
+        correctGuesses++;
+        scoreIndicator.write(`${correctGuesses}/${MAX_ROUNDS}`);
+        setTimeout(endRound, 2000);
     };
 
     const round = () => {
@@ -118,6 +139,8 @@ startMenu.closeButton.addEventListener("click", () => {
         state = getUniqueValueFromObject(states, Object.keys(playerImages));
 
         states[state]().then(module => {
+            timer.write("--/--");
+
             imageShowDisplayImage.src = module.default;
             const roundMenu = new RoundMenu(state, module.default);
 
@@ -128,6 +151,8 @@ startMenu.closeButton.addEventListener("click", () => {
                 roundMenu.close(() => {
                     roundMenu.menu.remove();
                 });
+
+                enableFreehandShortcuts();
                 board.style.pointerEvents = "auto";
 
                 sign.unlock();
@@ -160,16 +185,7 @@ startMenu.closeButton.addEventListener("click", () => {
 
                     console.log(prediction, state);
                     if (prediction === state) {
-                        sign.unlock();
-                        indicator.unlock();
-                        sign.write(prediction, { onColor: "#34b518", shadowColor: "#2b7705" });
-                        indicator.write("!", { onColor: "#34b518", shadowColor: "#2b7705" });
-                        sign.lock();
-                        indicator.lock();
-
-                        correctGuesses++;
-                        scoreIndicator.write(`${correctGuesses}/${MAX_ROUNDS}`);
-                        setTimeout(endRound, 2000);
+                        winRound(prediction);
                     }
                 }
             }
@@ -209,6 +225,8 @@ startMenu.closeButton.addEventListener("click", () => {
         indicator.unlock();
         sign.write("sandbox");
         indicator.write("-");
+
+        enableFreehandShortcuts();
     });
 
     round();

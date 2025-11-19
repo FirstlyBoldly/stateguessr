@@ -10,6 +10,7 @@ export class StartMenu extends MenuPrototype {
         super(initialState);
 
         this.menu.id = "start-menu";
+        this.menu.classList.add("stateguessr-background");
 
         const summary = document.createElement("div");
         summary.id = "start-menu-summary";

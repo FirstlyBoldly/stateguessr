@@ -7,6 +7,7 @@ export class EndMenu extends MenuPrototype {
         super(initialState);
 
         this.menu.id = "end-menu";
+        this.menu.classList.add("stateguessr-background");
         this.contentWrapper.id = "end-menu-content-wrapper";
 
         const text = document.createElement("div");
