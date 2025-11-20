@@ -27,9 +27,8 @@ export const canvasCleared = () => {
 
 export const clearCanvas = (ctx, width, height) => {
     inputs = [];
-    ctx.rect(0, 0, width, height);
-    ctx.fillStyle = "#C4C4C4";
-    ctx.fill();
+    // ctx.fillStyle = "#C4C4C4";
+    ctx.clearRect(0, 0, width, height);
     window.dispatchEvent(canvasCleared());
 };
 
