@@ -39,21 +39,23 @@ export const DisplayContainer = (app) => {
             sign.options.dotSize = 4;
             sign.options.dotPadding = 1;
             sign.calcRect();
-            sign.render();
 
             indicator.options.dotSize = 4;
             indicator.options.dotPadding = 1;
             indicator.calcRect();
+
+            resizeSign();
             indicator.render();
         } else {
             sign.options.dotSize = 8;
             sign.options.dotPadding = 2;
             sign.calcRect();
-            sign.render();
 
             indicator.options.dotSize = 8;
             indicator.options.dotPadding = 2;
             indicator.calcRect();
+
+            resizeSign();
             indicator.render();
         }
     };
@@ -63,9 +65,7 @@ export const DisplayContainer = (app) => {
         resizeDot(x);
     });
 
-    window.addEventListener("resize", () => {
-        resizeSign();
-    });
+    window.addEventListener("resize", resizeSign);
 
     resizeDot(x);
     resizeSign();

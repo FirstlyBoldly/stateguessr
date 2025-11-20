@@ -15,18 +15,14 @@ export class MenuPrototype {
         this.buttonWrapper = document.createElement("div");
         this.buttonWrapper.classList.add("menu-button-wrapper");
 
-        this.closeButton = Button("x", () => {
-            this.close();
-        });
+        this.closeButton = Button("x", this.close);
         this.closeButton.classList.add("menu-close-button");
         this.buttonWrapper.appendChild(this.closeButton);
 
         this.menuWrapper.append(this.contentWrapper, this.buttonWrapper);
         this.menu.appendChild(this.menuWrapper);
 
-        window.addEventListener("resize", () => {
-            this.resize();
-        });
+        window.addEventListener("resize", this.resize);
 
         switch (initialState) {
             case "opened":
@@ -67,8 +63,10 @@ export class MenuPrototype {
             );
         };
 
-        this.menu.style.top = `${displayContainerStyleBottom()}px`;
-        this.menu.style.height = `${footerStyleTop() - displayContainerStyleBottom()}px`;
+        setTimeout(() => {
+            this.menu.style.top = `${displayContainerStyleBottom()}px`;
+            this.menu.style.height = `${footerStyleTop() - displayContainerStyleBottom()}px`;
+        }, 100);
     };
 
     open = (onOpen) => {
