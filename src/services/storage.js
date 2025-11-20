@@ -50,7 +50,10 @@ export const upload = (round, state, canvas) => {
     tempCtx.filter = "none";
     tempCtx.restore();
 
-    const imageRef = ref(storage, `/states/${state}/${roundId}/${imageIndex}.jpg`);
+    const imageRef = ref(
+        storage,
+        `/states/${state}/${roundId}/${imageIndex}.jpg`,
+    );
     imageIndex++;
 
     const metadata = {
@@ -61,10 +64,12 @@ export const upload = (round, state, canvas) => {
 
     if (prevDataUrl !== dataUrl) {
         prevDataUrl = dataUrl;
-        uploadString(imageRef, dataUrl, "data_url", metadata).then((snapshot) => {
-            getDownloadURL(snapshot.ref).then((downloadURL) => {
-                console.log(downloadURL);
-            });
-        })
+        uploadString(imageRef, dataUrl, "data_url", metadata).then(
+            (snapshot) => {
+                getDownloadURL(snapshot.ref).then((downloadURL) => {
+                    console.log(downloadURL);
+                });
+            },
+        );
     }
 };

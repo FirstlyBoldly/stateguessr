@@ -6,7 +6,7 @@ export const DisplayContainer = (app) => {
     container.id = "text-display";
     container.classList.add("display-container");
 
-    const sign = new Display({ changeWithViewport: true }, "STATEGUESSR");
+    const sign = new Display({}, "STATEGUESSR");
     sign.canvas.id = "display-sign";
     const indicator = new Display({ length: 1, playSound: false }, "!");
     indicator.canvas.id = "display-indicator";
