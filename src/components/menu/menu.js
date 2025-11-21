@@ -101,7 +101,6 @@ export class MenuPrototype {
 
         const handler = () => {
             setTimeout(() => {
-                // this.menu.removeEventListener("transitionend", handler);
                 this.menu.style.display = "none";
             }, 100);
 
@@ -109,8 +108,6 @@ export class MenuPrototype {
                 onClose();
             }
         };
-
-        // this.menu.addEventListener("transitionend", handler);
 
         setTimeout(() => {
             handler();

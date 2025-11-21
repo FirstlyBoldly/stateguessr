@@ -26,16 +26,9 @@ export const upload = (round, state, canvas) => {
     };
 
     const dataUrl = canvas.toDataURL("image/jpeg", 1.0);
-    console.log(dataUrl);
 
     if (prevDataUrl !== dataUrl) {
         prevDataUrl = dataUrl;
-        uploadString(imageRef, dataUrl, "data_url", metadata).then(
-            (snapshot) => {
-                getDownloadURL(snapshot.ref).then((downloadURL) => {
-                    console.log(downloadURL);
-                });
-            },
-        );
+        uploadString(imageRef, dataUrl, "data_url", metadata);
     }
 };

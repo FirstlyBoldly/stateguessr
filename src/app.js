@@ -41,7 +41,9 @@ app.appendChild(endMenu.menu);
 startMenu.closeButton.addEventListener("click", () => {
     // Get rid of the start menu.
     startMenu.closeButton.disabled = true;
-    startMenu.close(startMenu.menu.remove);
+    startMenu.close(() => {
+        startMenu.menu.remove();
+    });
 
     enableFreehandShortcuts();
 
@@ -220,7 +222,9 @@ startMenu.closeButton.addEventListener("click", () => {
 
             // Give the player some time to look at the target state silhouette.
             setTimeout(() => {
-                roundMenu.close(roundMenu.menu.remove);
+                roundMenu.close(() => {
+                    roundMenu.menu.remove();
+                });
                 round();
             }, INTERMISSION_DURATION_IN_SECONDS * 1000);
         });
