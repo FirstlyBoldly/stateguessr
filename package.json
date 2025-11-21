@@ -17,6 +17,7 @@
     "@tensorflow/tfjs": "^4.22.0",
     "firebase": "^12.4.0",
     "perfect-freehand": "^1.2.2",
+    "trim-canvas": "^0.1.2",
     "uuid": "^13.0.0"
   },
   "devDependencies": {

@@ -17,8 +17,7 @@ warmup();
 export const predictState = (pixels) => {
     return new Promise((resolve) => {
         let tensor = tf.browser.fromPixels(pixels, 3);
-        tensor = tensor.expandDims(0);
-        tensor = tensor.resizeBilinear([224, 224]);
+        tensor = tensor.expandDims(0).cast("float32");
 
         const result = model.predict(tensor);
 

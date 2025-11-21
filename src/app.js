@@ -17,7 +17,7 @@ import {
     disableFreehandShortcuts,
     resetFreehand,
 } from "./components/board";
-import { getUniqueValueFromObject, loadStates } from "./helpers";
+import { getUniqueValueFromObject, loadStates, preprocess } from "./helpers";
 import { upload } from "./services/storage";
 
 const app = document.getElementById("app");
@@ -102,7 +102,10 @@ startMenu.closeButton.addEventListener("click", () => {
         board.style.pointerEvents = "none";
 
         const canvas = document.getElementById("front-canvas");
-        upload(roundNumber, state, canvas);
+        const processedCanvas = preprocess(canvas);
+        if (processedCanvas) {
+            upload(roundNumber, state, processedCanvas);
+        }
 
         playerImages[state] = resetFreehand();
 
@@ -193,8 +196,12 @@ startMenu.closeButton.addEventListener("click", () => {
     // We might need to do something about this nested mess...
     window.addEventListener(canvasEvents.canvasUpdated, () => {
         const canvas = document.getElementById("front-canvas");
-        upload(roundNumber, state, canvas);
-        predictState(canvas).then((prediction) => {
+        const processedCanvas = preprocess(canvas);
+        if (processedCanvas) {
+            upload(roundNumber, state, processedCanvas);
+        }
+
+        predictState(processedCanvas).then((prediction) => {
             if (prediction) {
                 sign.write(prediction);
                 indicator.write("?");
