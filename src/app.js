@@ -24,7 +24,6 @@ const app = document.getElementById("app");
 
 const [statContainer, roundIndicator, timer, scoreIndicator] = StatDisplay(app);
 
-// Need direct manipulation of the instances.
 const [, sign, indicator] = DisplayContainer(app);
 
 const board = Board();
@@ -42,9 +41,7 @@ app.appendChild(endMenu.menu);
 startMenu.closeButton.addEventListener("click", () => {
     // Get rid of the start menu.
     startMenu.closeButton.disabled = true;
-    startMenu.close(() => {
-        startMenu.menu.remove();
-    });
+    startMenu.close(startMenu.menu.remove);
 
     enableFreehandShortcuts();
 
@@ -52,19 +49,24 @@ startMenu.closeButton.addEventListener("click", () => {
 
     // Variables of the game loop.
     const MAX_ROUNDS = 5;
+    const ROUND_STARTING_NUMBER = 0;
     const ROUND_DURATION_IN_SECONDS = 20;
     const INTERMISSION_DURATION_IN_SECONDS = 2;
-    const ROUND_STARTING_NUMBER = 0;
 
     let roundNumber = ROUND_STARTING_NUMBER;
+    // Reference to the one second interval per each round.
     let roundInterval = null;
 
     // This will collect the final player drawing at end of each round.
     let playerImages = {};
 
+    // Loads a state:stateUrl pair object.
     const states = loadStates();
+
+    // Target state of the round.
     let state = null;
 
+    // Game session tally.
     let correctGuesses = 0;
 
     const endGame = () => {
@@ -79,6 +81,9 @@ startMenu.closeButton.addEventListener("click", () => {
         endMenu.pushPlayerGallery(...Object.entries(playerImages));
         playerImages = {};
 
+        // Indicate end of game.
+        // Why do we have to lock/unlock the `Display` objects?
+        // ... because I suck at defining harmonic event dispatches and event listeners duh!
         sign.unlock();
         indicator.unlock();
         sign.write("finish", {
@@ -90,6 +95,7 @@ startMenu.closeButton.addEventListener("click", () => {
         sign.lock();
         indicator.lock();
 
+        // Show player performance.
         endMenu.setStats(correctGuesses, MAX_ROUNDS);
         endMenu.open();
     };
@@ -101,12 +107,21 @@ startMenu.closeButton.addEventListener("click", () => {
         imageShowCloseButton.click();
         board.style.pointerEvents = "none";
 
+        // Get final snapshot at end of round.
+        // We do this for data collection purposes.
         const canvas = document.getElementById("front-canvas");
         const processedCanvas = preprocess(canvas);
+
+        // Only bother uploading if the canvas isn't blank.
+        // I don't want to lose any more money that I have, in pursuit of this stupid idea...
         if (processedCanvas) {
             upload(roundNumber, state, processedCanvas);
         }
 
+        // Reset the canvas and save the final snapshot for player gallery purposes.
+        // The reason we have two separate instances canvas data collection?
+        // 1. I suck at programming.
+        // 2. The images are completely different in use case/format.
         playerImages[state] = resetFreehand();
 
         sign.unlock();
@@ -116,7 +131,8 @@ startMenu.closeButton.addEventListener("click", () => {
         sign.lock();
         indicator.lock();
 
-        round();
+        // And again we start!
+        startRound();
     };
 
     const winRound = (state) => {
@@ -126,6 +142,9 @@ startMenu.closeButton.addEventListener("click", () => {
 
         board.style.pointerEvents = "none";
 
+        // TODO: Formalize the colors.
+        // Some are in rgb, some in hex.
+        // Honestly, they should be tucked away in their on files really.
         sign.unlock();
         indicator.unlock();
         sign.write(state, { onColor: "#34b518", shadowColor: "#2b7705" });
@@ -133,12 +152,37 @@ startMenu.closeButton.addEventListener("click", () => {
         sign.lock();
         indicator.lock();
 
-        correctGuesses++;
+        // Respond to player win immediately.
+        ++correctGuesses;
         scoreIndicator.write(`${correctGuesses}/${MAX_ROUNDS}`);
-        setTimeout(endRound, 2000);
+
+        // Show the green display for a bit before ending the round properly.
+        setTimeout(endRound, INTERMISSION_DURATION_IN_SECONDS * 1000);
     };
 
     const round = () => {
+        enableFreehandShortcuts();
+        board.style.pointerEvents = "auto";
+
+        sign.unlock();
+        indicator.unlock();
+        sign.write("stateguessr");
+        indicator.write("!");
+
+        timer.startFrom(ROUND_DURATION_IN_SECONDS);
+
+        let remainingSeconds = ROUND_DURATION_IN_SECONDS;
+        roundInterval = setInterval(() => {
+            --remainingSeconds;
+            if (remainingSeconds === 0) {
+                clearInterval(roundInterval);
+                endRound();
+            }
+        }, 1000);
+    };
+
+    const startRound = () => {
+        // This is our base case!
         ++roundNumber;
         if (roundNumber > MAX_ROUNDS) {
             endGame();
@@ -155,61 +199,53 @@ startMenu.closeButton.addEventListener("click", () => {
         roundIndicator.write(`#${roundNumber}`);
         scoreIndicator.write(`${correctGuesses}/${MAX_ROUNDS}`);
 
+        // Get a new target state for this round.
+        // Must not overlap with previous rounds!
         state = getUniqueValueFromObject(states, Object.keys(playerImages));
 
+        // The actual image data is loaded onto memory lazily...
         states[state]().then((module) => {
             timer.write("--/--");
 
+            // Prepare the target display
             imageShowDisplayImage.src = module.default;
+
+            // New instance of the round menu.
+            // Maybe we should just keep one instance going...
+            // I don't know, too lazy to benchmark performance.
             const roundMenu = new RoundMenu(state, module.default);
 
             app.append(roundMenu.menu);
             roundMenu.open();
 
+            // Give the player some time to look at the target state silhouette.
             setTimeout(() => {
-                roundMenu.close(() => {
-                    roundMenu.menu.remove();
-                });
-
-                enableFreehandShortcuts();
-                board.style.pointerEvents = "auto";
-
-                sign.unlock();
-                indicator.unlock();
-                sign.write("stateguessr");
-                indicator.write("!");
-
-                timer.startFrom(ROUND_DURATION_IN_SECONDS);
-
-                let remainingSeconds = ROUND_DURATION_IN_SECONDS;
-                roundInterval = setInterval(() => {
-                    --remainingSeconds;
-                    if (remainingSeconds === 0) {
-                        clearInterval(roundInterval);
-                        endRound();
-                    }
-                }, 1000);
+                roundMenu.close(roundMenu.menu.remove);
+                round();
             }, INTERMISSION_DURATION_IN_SECONDS * 1000);
         });
     };
 
-    // We might need to do something about this nested mess...
     window.addEventListener(canvasEvents.canvasUpdated, () => {
         const canvas = document.getElementById("front-canvas");
         const processedCanvas = preprocess(canvas);
-        if (processedCanvas) {
-            upload(roundNumber, state, processedCanvas);
-        }
 
-        predictState(processedCanvas).then((prediction) => {
-            if (prediction) {
-                sign.write(prediction);
-                indicator.write("?");
-                if (prediction === state) {
-                    winRound(prediction);
+        // Only proceed if the canvas has data in it (i.e., not blank).
+        if (processedCanvas) {
+            // Upload for data collection purposes.
+            upload(roundNumber, state, processedCanvas);
+
+            // The meat of the game.
+            predictState(processedCanvas).then((prediction) => {
+                if (prediction) {
+                    sign.write(prediction);
+                    indicator.write("?");
+                    if (prediction === state) {
+                        winRound(prediction);
+                    }
                 }
-            }
-        });
+            });
+        }
     });
 
     window.addEventListener(canvasEvents.canvasCleared, () => {
@@ -218,6 +254,7 @@ startMenu.closeButton.addEventListener("click", () => {
     });
 
     endMenu.retryButton.addEventListener("click", () => {
+        // Reset everything to their initial state.
         roundNumber = ROUND_STARTING_NUMBER;
         board.style.pointerEvents = "auto";
 
@@ -232,9 +269,13 @@ startMenu.closeButton.addEventListener("click", () => {
         sign.write("stateguessr");
         indicator.write("!");
 
-        round();
+        startRound();
     });
 
+    // Sandbox mode.
+    // There is no target state for the model to guess towards.
+    // This is purely for the fun of the game.
+    // Without the stress of a timer...
     endMenu.closeButton.addEventListener("click", () => {
         document.getElementById("goal-display-button").remove();
         board.style.pointerEvents = "auto";
@@ -249,5 +290,6 @@ startMenu.closeButton.addEventListener("click", () => {
         enableFreehandShortcuts();
     });
 
-    round();
+    // Entrypoint.
+    startRound();
 });
