@@ -45,39 +45,21 @@ export const preprocess = (canvas) => {
     // tempCtx.filter = "none";
     // tempCtx.restore();
 
+    // Thanks Gemini!
     // 1. Draw the image normally first
     tempCtx.drawImage(copy, 0, 0, 224, 224);
 
     // 2. Change the blending mode
-    tempCtx.globalCompositeOperation = 'difference';
+    tempCtx.globalCompositeOperation = "difference";
 
     // 3. Draw a white rectangle over the entire image
     // Since White is (255, 255, 255), the difference mode subtracts
     // the current pixel values from 255 (Inversion).
-    tempCtx.fillStyle = 'white';
+    tempCtx.fillStyle = "white";
     tempCtx.fillRect(0, 0, 224, 224);
 
     // 4. Reset the blending mode for future draws
-    tempCtx.globalCompositeOperation = 'source-over';
-
-    // // 1. Draw the image normally
-    // tempCtx.drawImage(copy, 0, 0, 224, 224);
-
-    // // 2. Get the raw pixel data
-    // const imageData = tempCtx.getImageData(0, 0, 224, 224);
-    // const data = imageData.data;
-
-    // // 3. Loop through every pixel
-    // // The array is arranged as [R, G, B, A, R, G, B, A...]
-    // for (let i = 0; i < data.length; i += 4) {
-    //     data[i]     = 255 - data[i];     // Invert Red
-    //     data[i + 1] = 255 - data[i + 1]; // Invert Green
-    //     data[i + 2] = 255 - data[i + 2]; // Invert Blue
-    //     // We usually do NOT invert Alpha (i + 3), leave it as is
-    // }
-
-    // // 4. Put the modified data back onto the canvas
-    // tempCtx.putImageData(imageData, 0, 0);
+    tempCtx.globalCompositeOperation = "source-over";
 
     return temp;
 };
