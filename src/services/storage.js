@@ -19,9 +19,10 @@ export const upload = (round, state, canvas, winningDoodle = false) => {
         // Basically, if there is indeed a winning image,
         // I want said round directory to be queryable.
         roundIdRef = doc(db, state, roundId);
-        setDoc(roundIdRef, {
+        const data = {
             roundWon: false,
-        });
+        }
+        setDoc(roundIdRef, data);
 
         prevRound = round;
         imageIndex = 0;

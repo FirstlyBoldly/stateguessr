@@ -18,6 +18,6 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const storage = getStorage(app);
-const db = getFirestore(app);
+const db = getFirestore(app, "round-ids");
 
 export { storage, db };
