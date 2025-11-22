@@ -124,7 +124,9 @@ startMenu.closeButton.addEventListener("click", () => {
         // The reason we have two separate instances canvas data collection?
         // 1. I suck at programming.
         // 2. The images are completely different in use case/format.
-        playerImages[state] = resetFreehand();
+        if (!playerImages[state]) {
+            playerImages[state] = resetFreehand();
+        }
 
         sign.unlock();
         indicator.unlock();
@@ -236,9 +238,6 @@ startMenu.closeButton.addEventListener("click", () => {
 
         // Only proceed if the canvas has data in it (i.e., not blank).
         if (processedCanvas) {
-            // Upload for data collection purposes.
-            upload(roundNumber, state, processedCanvas);
-
             // The meat of the game.
             predictState(processedCanvas).then((prediction) => {
                 if (prediction) {
@@ -246,6 +245,10 @@ startMenu.closeButton.addEventListener("click", () => {
                     indicator.write("?");
                     if (prediction === state) {
                         winRound(prediction);
+                        // Upload for data collection purposes.
+                        upload(roundNumber, state, processedCanvas, true);
+                    } else {
+                        upload(roundNumber, state, processedCanvas);
                     }
                 }
             });

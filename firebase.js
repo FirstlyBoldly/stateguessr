@@ -11,7 +11,7 @@ const firebaseConfig = {
     projectId: "stateguessr-1234",
     storageBucket: "stateguessr-1234.firebasestorage.app",
     messagingSenderId: "351794121935",
-    appId: "1:351794121935:web:c60bd480d281b25fda7bba"
+    appId: "1:351794121935:web:c60bd480d281b25fda7bba",
 };
 
 // Initialize Firebase

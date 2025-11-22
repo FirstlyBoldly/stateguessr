@@ -8,7 +8,7 @@ let imageIndex = 0;
 
 let prevDataUrl = null;
 
-export const upload = (round, state, canvas) => {
+export const upload = (round, state, canvas, winningDoodle = false) => {
     if (round !== prevRound) {
         roundId = uuidv4();
         prevRound = round;
@@ -23,6 +23,9 @@ export const upload = (round, state, canvas) => {
 
     const metadata = {
         contentType: "image/jpeg",
+        customMetadata: {
+            winningDoodle: winningDoodle,
+        },
     };
 
     const dataUrl = canvas.toDataURL("image/jpeg", 1.0);
