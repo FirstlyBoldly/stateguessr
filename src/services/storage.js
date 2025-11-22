@@ -1,16 +1,28 @@
-import { ref, uploadString, getDownloadURL } from "firebase/storage";
-import { storage } from "../../firebase";
+import { ref, uploadString } from "firebase/storage";
+import { doc, setDoc, updateDoc } from "firebase/firestore";
+import { storage, db } from "../../firebase";
 import { v4 as uuidv4 } from "uuid";
 
-let prevRound = null;
-let roundId = null;
 let imageIndex = 0;
 
+let prevRound = null;
 let prevDataUrl = null;
+
+let roundId = null;
+let roundIdRef = null;
 
 export const upload = (round, state, canvas, winningDoodle = false) => {
     if (round !== prevRound) {
         roundId = uuidv4();
+
+        // This will contain metadata for said round ID.
+        // Basically, if there is indeed a winning image,
+        // I want said round directory to be queryable.
+        roundIdRef = doc(db, state, roundId);
+        setDoc(roundIdRef, {
+            roundWon: false,
+        });
+
         prevRound = round;
         imageIndex = 0;
     }
@@ -33,5 +45,12 @@ export const upload = (round, state, canvas, winningDoodle = false) => {
     if (prevDataUrl !== dataUrl) {
         prevDataUrl = dataUrl;
         uploadString(imageRef, dataUrl, "data_url", metadata);
+    }
+
+    // Update round status.
+    if (winningDoodle) {
+        updateDoc(roundIdRef, {
+            roundWon: true,
+        });
     }
 };
